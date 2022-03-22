@@ -53,3 +53,4 @@ print/
 
 # Ignore Gradle build output directory
 build
+/src/main/resources/receipt.jpg
