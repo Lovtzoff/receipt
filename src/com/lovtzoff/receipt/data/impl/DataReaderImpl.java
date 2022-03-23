@@ -8,8 +8,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
-import static com.lovtzoff.receipt.constants.Constants.CARD_LIST;
-import static com.lovtzoff.receipt.constants.Constants.PRODUCT_LIST;
+import static com.lovtzoff.receipt.constants.Constants.*;
 
 /**
  * Реализация интерфейса DataReader.
@@ -27,6 +26,11 @@ public class DataReaderImpl implements DataReader {
     @Override
     public List<String> getDiscountCard() {
         return readAllLines(CARD_LIST);
+    }
+
+    @Override
+    public List<String> getRegexData() {
+        return readAllLines(REGEX_DATA_LIST);
     }
 
     //----------------------------------------------------------------------------------------
