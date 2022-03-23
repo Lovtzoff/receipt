@@ -10,11 +10,10 @@ import java.nio.file.Files
 class ReceiptDownloadTask extends DefaultTask {
 
     @Input
-    String imageUrl =
-            "https://image.shutterstock.com/image-vector/receipt-bill-realistic-template-paper-600w-2075467852.jpg"
+    String imageUrl
 
     @OutputFile
-    File receiptFile = new File("src/main/resources/receipt.jpg")
+    File receiptFile
 
     @TaskAction
     void runTask() throws IOException {
