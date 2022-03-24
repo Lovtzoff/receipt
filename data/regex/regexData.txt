@@ -35,3 +35,4 @@ n4;Cherry;3.18;6
 95;Pear;3.85;one
 33;Cherry;3.18;2n
 40;Strawberry;5.20;-1
+28;Ёлкаё;1.12;2

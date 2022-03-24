@@ -23,8 +23,8 @@ public class RegexValidator {
      */
     public static void checkData(List<String> sourceList) {
         String regex = "(^[1-9]\\d?|100);" +
-                "(([А-Я][а-я]{2,29})|([A-Z][a-z]{2,29}));" +
-                "([1-9]\\d?\\.\\d\\d|100\\.00);" +
+                "(([А-ЯЁ][а-яё]{2,29})|([A-Z][a-z]{2,29}));" +
+                "([1-9]\\d?\\.\\d{2}|100\\.00);" +
                 "([1-9]|[1]\\d|20)$";
         List<String> invalidList = new ArrayList<>();
         List<String> validList = new ArrayList<>();
