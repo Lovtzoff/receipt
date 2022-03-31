@@ -22,4 +22,9 @@ public class Constants {
 
     public static final int COUNT_DEFAULT = 1;
     public static final int SCALE_DEFAULT = 3;
+
+    private static final String REGEX_DIR = DATA_DIR + "/regex";
+    public static final String REGEX_DATA_LIST = REGEX_DIR + "/regexData.txt";
+    public static final String INVALID_DATA_LIST = REGEX_DIR + "/invalidRegexData.txt";
+    public static final String VALID_DATA_LIST = REGEX_DIR + "/validRegexData.txt";
 }

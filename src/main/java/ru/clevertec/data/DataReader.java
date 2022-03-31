@@ -22,4 +22,11 @@ public interface DataReader {
      * @return список строк с информацией о скидочных картах
      */
     List<String> getDiscountCard();
+
+    /**
+     * Получить список строк с данными для regex.
+     *
+     * @return список строк с данными
+     */
+    List<String> getRegexData();
 }

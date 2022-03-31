@@ -1,6 +1,5 @@
 package ru.clevertec.data.impl;
 
-import ru.clevertec.constants.Constants;
 import ru.clevertec.data.DataReader;
 
 import java.io.IOException;
@@ -8,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+
+import static ru.clevertec.constants.Constants.*;
 
 /**
  * Реализация интерфейса DataReader.
@@ -19,12 +20,17 @@ public class DataReaderImpl implements DataReader {
 
     @Override
     public List<String> getProducts() {
-        return readAllLines(Constants.PRODUCT_LIST);
+        return readAllLines(PRODUCT_LIST);
     }
 
     @Override
     public List<String> getDiscountCard() {
-        return readAllLines(Constants.CARD_LIST);
+        return readAllLines(CARD_LIST);
+    }
+
+    @Override
+    public List<String> getRegexData() {
+        return readAllLines(REGEX_DATA_LIST);
     }
 
     //----------------------------------------------------------------------------------------
