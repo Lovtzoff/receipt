@@ -1,14 +1,16 @@
 package ru.clevertec.service.impl;
 
 import ru.clevertec.constants.Constants;
-import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.data.DataReader;
+import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Product;
 import ru.clevertec.service.ProductService;
 import ru.clevertec.util.ParameterUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Реализация интерфейса ProductService.
@@ -37,11 +39,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findOneById(Integer id) {
         if (ParameterUtils.containsId(findAll(), id)) {
-            for (Product product : findAll()) {
-                if (product.getId().equals(id)) {
-                    return product;
-                }
-            }
+            return findAll().stream()
+                    .filter(product -> product.getId().equals(id))
+                    .findFirst()
+                    .get();
         }
         throw new ParameterNotFoundException("Присутствуют товары, отсутствующие в каталоге!");
     }
@@ -51,16 +52,14 @@ public class ProductServiceImpl implements ProductService {
         List<String> lineList = dataReader.getProducts();
         if (!lineList.isEmpty()) {
             List<Product> productList = new ArrayList<>(lineList.size());
-            for (String line : lineList) {
-                String[] array = line.split(Constants.SEPARATOR);
-                productList.add(
-                        new Product(
-                                Integer.parseInt(array[0]),         //id product
-                                array[1],                           //name
-                                Double.parseDouble(array[2])        //price
-                        )
-                );
-            }
+            lineList.stream()
+                    .map(line -> line.split(Constants.SEPARATOR))
+                    .forEach(array -> productList.add(
+                            new Product(
+                                    Integer.parseInt(array[0]),         //id product
+                                    array[1],                           //name
+                                    Double.parseDouble(array[2])        //price
+                            )));
             return productList;
         }
         throw new ParameterNotFoundException("Ошибка чтения каталога товаров!");

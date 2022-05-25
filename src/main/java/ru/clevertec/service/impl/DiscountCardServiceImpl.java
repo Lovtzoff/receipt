@@ -1,5 +1,6 @@
 package ru.clevertec.service.impl;
 
+import ru.clevertec.constants.Constants;
 import ru.clevertec.data.DataReader;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.DiscountCard;
@@ -38,12 +39,10 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public DiscountCard findOneById(Integer id) {
-        for (DiscountCard discountCard : findAll()) {
-            if (discountCard.getId().equals(id)) {
-                return discountCard;
-            }
-        }
-        return new DiscountCard();
+        return findAll().stream()
+                .filter(discountCard-> discountCard.getId().equals(id))
+                .findFirst()
+                .get();
     }
 
     @Override
@@ -52,15 +51,13 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         try {
             if (!lineList.isEmpty()) {
                 List<DiscountCard> discountCardList = new ArrayList<>(lineList.size());
-                for (String line : lineList) {
-                    String[] array = line.split(SEPARATOR);
-                    discountCardList.add(
-                            new DiscountCard(
-                                    Integer.parseInt(array[0]),         //id DiscountCard
-                                    Integer.parseInt(array[1])          //Discount
-                            )
-                    );
-                }
+                lineList.stream()
+                        .map(line -> line.split(Constants.SEPARATOR))
+                        .forEach(array -> discountCardList.add(
+                                new DiscountCard(
+                                        Integer.parseInt(array[0]),         //id DiscountCard
+                                        Integer.parseInt(array[1])          //Discount
+                                )));
                 return discountCardList;
             }
             throw new ParameterNotFoundException("Ошибка чтения списка скидочных карт!");
