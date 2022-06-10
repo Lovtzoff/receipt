@@ -16,6 +16,7 @@ public class Constants {
     public static final String RECEIPT_FILE = PRINT_DIR + "/receipt.print";
 
     public static final String ARG_SEPARATOR = "-";
+    public static final String STRING_SEPARATOR = " ";
 
     public static final String DATE_PATTERN = "dd/MM/yyyy";
     public static final String TIME_PATTERN = "HH:mm:ss";
@@ -27,4 +28,6 @@ public class Constants {
     public static final String REGEX_DATA_LIST = REGEX_DIR + "/regexData.txt";
     public static final String INVALID_DATA_LIST = REGEX_DIR + "/invalidRegexData.txt";
     public static final String VALID_DATA_LIST = REGEX_DIR + "/validRegexData.txt";
+
+    public static final int ID_CASHIER_DEFAULT = 32;
 }

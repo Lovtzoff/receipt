@@ -56,7 +56,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         return new Receipt(
                 new Header(),
-                new Cashier(32),
+                new Cashier(Constants.ID_CASHIER_DEFAULT),
                 new SimpleDateFormat(Constants.DATE_PATTERN).format(new Date()),
                 new SimpleDateFormat(Constants.TIME_PATTERN).format(new Date()),
                 productsList,

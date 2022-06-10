@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Класс модели магазинного чека с полями:
@@ -49,15 +50,44 @@ public class Receipt {
     /**
      * Конечная цена без скидки.
      */
-    private double totalNoDiscount;
+    private Double totalNoDiscount;
     /**
      * Скидка.
      */
-    private double discount;
+    private Double discount;
     /**
      * Конечная цена со скидкой.
      */
-    private double totalWithDiscount;
+    private Double totalWithDiscount;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Receipt receipt = (Receipt) o;
+        return getHeader().equals(receipt.getHeader()) &&
+                getCashier().equals(receipt.getCashier()) &&
+                getPrintDate().equals(receipt.getPrintDate()) &&
+                getPrintTime().equals(receipt.getPrintTime()) &&
+                getProductsList().equals(receipt.getProductsList()) &&
+                getTotalNoDiscount().equals(receipt.getTotalNoDiscount()) &&
+                getDiscount().equals(receipt.getDiscount()) &&
+                getTotalWithDiscount().equals(receipt.getTotalWithDiscount());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getHeader(),
+                getCashier(),
+                getPrintDate(),
+                getPrintTime(),
+                getProductsList(),
+                getTotalNoDiscount(),
+                getDiscount(),
+                getTotalWithDiscount()
+        );
+    }
 
     @Override
     public String toString() {
