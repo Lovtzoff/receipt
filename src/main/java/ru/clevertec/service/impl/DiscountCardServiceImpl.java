@@ -42,7 +42,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         return findAll().stream()
                 .filter(discountCard-> discountCard.getId().equals(id))
                 .findFirst()
-                .get();
+                .orElse(new DiscountCard());
     }
 
     @Override
