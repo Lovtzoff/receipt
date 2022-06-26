@@ -5,6 +5,7 @@ import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Receipt;
 import ru.clevertec.service.ReceiptService;
 import ru.clevertec.service.impl.ReceiptServiceImpl;
+import ru.clevertec.service.proxy.ReceiptServiceProxy;
 import ru.clevertec.validation.ParameterValidator;
 import ru.clevertec.validation.RegexValidator;
 
@@ -24,7 +25,7 @@ public class App {
 
         try {
             ParameterValidator.isValid(args);
-            ReceiptService receiptService = new ReceiptServiceImpl();
+            ReceiptService receiptService = new ReceiptServiceProxy();
             Receipt receipt = receiptService.generateReceipt(args);
             receiptService.printReceipt(receipt);
         } catch (ParameterNotFoundException ex) {
