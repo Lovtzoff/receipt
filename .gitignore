@@ -60,3 +60,6 @@ build
 ###
 /data/regex/invalidRegexData.txt
 /data/regex/validRegexData.txt
+
+###
+gradle.properties

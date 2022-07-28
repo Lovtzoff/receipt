@@ -31,7 +31,11 @@ dependencies {
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
+    // log
     implementation 'org.slf4j:slf4j-log4j12:1.7.36'
+
+    // jdbc
+    implementation 'org.postgresql:postgresql:42.3.6'
 
     // Gson
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
