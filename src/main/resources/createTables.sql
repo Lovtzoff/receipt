@@ -1,7 +1,7 @@
 create table if not exists Product (
   id serial primary key,
   productName varchar(100) not null,
-  price real not null
+  price numeric not null
 );
 
 create table if not exists DiscountCard (
