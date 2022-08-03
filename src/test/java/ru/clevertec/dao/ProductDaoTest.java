@@ -11,8 +11,6 @@ import ru.clevertec.util.ProductUtils;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class ProductDaoTest {
 
     private final ProductDao productDao = new ProductDaoImpl();

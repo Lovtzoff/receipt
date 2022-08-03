@@ -1,6 +1,5 @@
 package ru.clevertec.dao.impl;
 
-import org.postgresql.core.Query;
 import ru.clevertec.dao.ProductDao;
 import ru.clevertec.model.Product;
 import ru.clevertec.util.DBConnectionPool;
