@@ -4,7 +4,6 @@ import ru.clevertec.dao.ProductDao;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Product;
 import ru.clevertec.service.ProductService;
-import ru.clevertec.util.ParameterUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,19 +43,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
-//        List<String> lineList = dataReader.getProducts();
-//        if (!lineList.isEmpty()) {
-//            List<Product> productList = new ArrayList<>(lineList.size());
-//            lineList.stream()
-//                    .map(line -> line.split(Constants.SEPARATOR))
-//                    .forEach(array -> productList.add(
-//                            new Product(
-//                                    Integer.parseInt(array[0]),         //id product
-//                                    array[1],                           //name
-//                                    Double.parseDouble(array[2])        //price
-//                            )));
-//            return productList;
-//        }
-        throw new ParameterNotFoundException("Ошибка чтения каталога товаров!");
+        List<Product> products = productDao.findAll();
+        if (!products.isEmpty()) {
+            return products;
+        }
+        throw new ParameterNotFoundException("Ошибка чтения каталога товаров! База товаров пуста!");
     }
 }

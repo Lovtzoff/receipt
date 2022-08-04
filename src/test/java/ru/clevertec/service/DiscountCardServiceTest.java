@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import ru.clevertec.data.impl.DataReaderImpl;
+import ru.clevertec.dao.impl.DiscountCardDaoImpl;
 import ru.clevertec.model.DiscountCard;
 import ru.clevertec.service.impl.DiscountCardServiceImpl;
 import ru.clevertec.util.DiscountCardUtils;
@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 class DiscountCardServiceTest {
 
     static List<DiscountCard> discountCardList;
-    DiscountCardService discountCardService = new DiscountCardServiceImpl(new DataReaderImpl());
+    DiscountCardService discountCardService = new DiscountCardServiceImpl(new DiscountCardDaoImpl());
 
     @BeforeAll
     static void generateDiscountCards() {
@@ -29,11 +29,10 @@ class DiscountCardServiceTest {
         discountCardList = null;
     }
 
-
     @Test
     void findOneByIdTest() {
-        DiscountCard discountCard = new DiscountCard(1210, 2);
-        Assertions.assertEquals(discountCard, discountCardService.findOneById(1210));
+        DiscountCard discountCard = new DiscountCard(17, 5);
+        Assertions.assertEquals(discountCard, discountCardService.findOneById(17));
     }
 
     @Test
@@ -42,8 +41,8 @@ class DiscountCardServiceTest {
         Assertions.assertNull(discountCardService.findOneById(1136).getDiscount());
     }
 
-    static IntStream generateMissingIds(){
-        return IntStream.range(0, 1200);
+    static IntStream generateMissingIds() {
+        return IntStream.range(31, 35);
     }
 
     @ParameterizedTest

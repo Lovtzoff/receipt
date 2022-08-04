@@ -18,7 +18,7 @@ class ReceiptServiceTest {
 
     static Receipt receipt;
     ReceiptService receiptService = new ReceiptServiceImpl();
-    static String[] sourceArray = new String[]{"3-1", "2-5", "5-1", "card-1230"};
+    static String[] sourceArray = new String[]{"3-1", "2-5", "5-1", "card-30"};
 
     @BeforeAll
     static void generateTestReceipt() {
@@ -36,11 +36,7 @@ class ReceiptServiceTest {
     }
 
     static Stream<String> generateInputStrings() {
-        return Stream.of(
-                "6-1 15-7 24-3 2-2 card-1207",
-                "16-10 8-20 card-1214",
-                "27-14 4-7 11-9 card-1223"
-        );
+        return Stream.of("6-1 15-7 24-3 2-2 card-7");
     }
 
     @ParameterizedTest

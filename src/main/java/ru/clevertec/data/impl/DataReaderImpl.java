@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
-import static ru.clevertec.constants.Constants.*;
+import static ru.clevertec.constants.Constants.REGEX_DATA_LIST;
 
 /**
  * Реализация интерфейса DataReader.
@@ -17,16 +17,6 @@ import static ru.clevertec.constants.Constants.*;
  * @see DataReader
  */
 public class DataReaderImpl implements DataReader {
-
-    @Override
-    public List<String> getProducts() {
-        return readAllLines(PRODUCT_LIST);
-    }
-
-    @Override
-    public List<String> getDiscountCard() {
-        return readAllLines(CARD_LIST);
-    }
 
     @Override
     public List<String> getRegexData() {

@@ -1,16 +1,12 @@
 package ru.clevertec.service.impl;
 
-import ru.clevertec.constants.Constants;
-import ru.clevertec.data.DataReader;
+import ru.clevertec.dao.DiscountCardDao;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.DiscountCard;
 import ru.clevertec.service.DiscountCardService;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static ru.clevertec.constants.Constants.SEPARATOR;
 
 /**
  * Реализация интерфейса DiscountCardService.
@@ -21,46 +17,35 @@ import static ru.clevertec.constants.Constants.SEPARATOR;
 public class DiscountCardServiceImpl implements DiscountCardService {
 
     /**
-     * Считыватель данных.
+     * Получение данных из базы.
      */
-    private final DataReader dataReader;
+    private final DiscountCardDao discountCardDao;
 
     /**
-     * Конструктор нового сервиса для скидочной карты, в который передается считыватель данных.
+     * Конструктор нового сервиса для скидочной карты, в который передаются данные из базы.
      *
-     * @param dataReader считыватель данных
-     * @see DiscountCardServiceImpl#DiscountCardServiceImpl(DataReader)
+     * @param discountCardDao считыватель данных
+     * @see DiscountCardServiceImpl#DiscountCardServiceImpl(DiscountCardDao)
      */
-    public DiscountCardServiceImpl(DataReader dataReader) {
-        this.dataReader = dataReader;
+    public DiscountCardServiceImpl(DiscountCardDao discountCardDao) {
+        this.discountCardDao = discountCardDao;
     }
 
     //------------------------------------------------------------------------------------------------
 
     @Override
     public DiscountCard findOneById(Integer id) {
-        return findAll().stream()
-                .filter(discountCard-> discountCard.getId().equals(id))
-                .findFirst()
-                .orElse(new DiscountCard());
+        return discountCardDao.findById(id).orElse(new DiscountCard());
     }
 
     @Override
     public List<DiscountCard> findAll() {
-        List<String> lineList = dataReader.getDiscountCard();
         try {
-            if (!lineList.isEmpty()) {
-                List<DiscountCard> discountCardList = new ArrayList<>(lineList.size());
-                lineList.stream()
-                        .map(line -> line.split(Constants.SEPARATOR))
-                        .forEach(array -> discountCardList.add(
-                                new DiscountCard(
-                                        Integer.parseInt(array[0]),         //id DiscountCard
-                                        Integer.parseInt(array[1])          //Discount
-                                )));
-                return discountCardList;
+            List<DiscountCard> discountCards = discountCardDao.findAll();
+            if (!discountCards.isEmpty()) {
+                return discountCards;
             }
-            throw new ParameterNotFoundException("Ошибка чтения списка скидочных карт!");
+            throw new ParameterNotFoundException("Ошибка чтения списка скидочных карт! База карт пуста!");
         } catch (ParameterNotFoundException ex) {
             System.out.println(ex.getMessage());
         }

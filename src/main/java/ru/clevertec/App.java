@@ -4,7 +4,6 @@ import ru.clevertec.data.impl.DataReaderImpl;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Receipt;
 import ru.clevertec.service.ReceiptService;
-import ru.clevertec.service.impl.ReceiptServiceImpl;
 import ru.clevertec.service.proxy.ReceiptServiceProxy;
 import ru.clevertec.validation.ParameterValidator;
 import ru.clevertec.validation.RegexValidator;

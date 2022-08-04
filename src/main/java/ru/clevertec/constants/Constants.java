@@ -8,9 +8,6 @@ package ru.clevertec.constants;
 public class Constants {
 
     private static final String DATA_DIR = "data";
-    public static final String PRODUCT_LIST = DATA_DIR + "/catalog.list";
-    public static final String CARD_LIST = DATA_DIR + "/card.list";
-    public static final String SEPARATOR = ";";
 
     public static final String PRINT_DIR = "print";
     public static final String RECEIPT_FILE = PRINT_DIR + "/receipt.print";

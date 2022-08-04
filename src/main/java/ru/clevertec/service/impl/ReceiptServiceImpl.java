@@ -1,8 +1,8 @@
 package ru.clevertec.service.impl;
 
 import ru.clevertec.constants.Constants;
+import ru.clevertec.dao.impl.DiscountCardDaoImpl;
 import ru.clevertec.dao.impl.ProductDaoImpl;
-import ru.clevertec.data.impl.DataReaderImpl;
 import ru.clevertec.model.*;
 import ru.clevertec.service.ReceiptService;
 import ru.clevertec.util.NumberUtils;
@@ -48,7 +48,7 @@ public class ReceiptServiceImpl implements ReceiptService {
                 );
             } else if (array[0].equals("card")) {
                 int cardId = NumberUtils.isNumeric(array[1]) ? Integer.parseInt(array[1]) : 0;
-                discountCard = new DiscountCardServiceImpl(new DataReaderImpl()).findOneById(cardId);
+                discountCard = new DiscountCardServiceImpl(new DiscountCardDaoImpl()).findOneById(cardId);
             }
         }
         double totalNoDiscount = productsList.stream().mapToDouble(Products::getTotalPrice).sum();

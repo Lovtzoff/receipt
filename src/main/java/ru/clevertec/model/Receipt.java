@@ -68,7 +68,6 @@ public class Receipt {
         return getHeader().equals(receipt.getHeader()) &&
                 getCashier().equals(receipt.getCashier()) &&
                 getPrintDate().equals(receipt.getPrintDate()) &&
-                getPrintTime().equals(receipt.getPrintTime()) &&
                 getProductsList().equals(receipt.getProductsList()) &&
                 getTotalNoDiscount().equals(receipt.getTotalNoDiscount()) &&
                 getDiscount().equals(receipt.getDiscount()) &&
