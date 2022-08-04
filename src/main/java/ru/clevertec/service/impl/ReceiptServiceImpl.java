@@ -1,6 +1,7 @@
 package ru.clevertec.service.impl;
 
 import ru.clevertec.constants.Constants;
+import ru.clevertec.dao.impl.ProductDaoImpl;
 import ru.clevertec.data.impl.DataReaderImpl;
 import ru.clevertec.model.*;
 import ru.clevertec.service.ReceiptService;
@@ -35,7 +36,7 @@ public class ReceiptServiceImpl implements ReceiptService {
             String[] array = arg.split(Constants.ARG_SEPARATOR);
             if (NumberUtils.isNumeric(array[0])) {
                 Product product = new ProductServiceImpl(
-                        new DataReaderImpl()).findOneById(Integer.parseInt(array[0]));
+                        new ProductDaoImpl()).findOneById(Integer.parseInt(array[0]));
                 int count = (NumberUtils.isNumeric(array[1]) && Integer.parseInt(array[1]) != 0) ?
                         Integer.parseInt(array[1]) : Constants.COUNT_DEFAULT;
                 productsList.add(

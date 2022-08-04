@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import ru.clevertec.dao.impl.ProductDaoImpl;
 import ru.clevertec.data.impl.DataReaderImpl;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Product;
@@ -16,7 +17,7 @@ import java.util.stream.IntStream;
 public class ProductServiceTest {
 
     static List<Product> productList;
-    ProductService productService = new ProductServiceImpl(new DataReaderImpl());
+    ProductService productService = new ProductServiceImpl(new ProductDaoImpl());
 
     @BeforeAll
     static void generateProducts() {

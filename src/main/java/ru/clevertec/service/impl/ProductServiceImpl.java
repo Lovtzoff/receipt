@@ -1,15 +1,12 @@
 package ru.clevertec.service.impl;
 
-import ru.clevertec.constants.Constants;
-import ru.clevertec.data.DataReader;
+import ru.clevertec.dao.ProductDao;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Product;
 import ru.clevertec.service.ProductService;
 import ru.clevertec.util.ParameterUtils;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -21,47 +18,45 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     /**
-     * Считыватель данных.
+     * Получение данных из базы.
      */
-    private final DataReader dataReader;
+    private final ProductDao productDao;
 
     /**
-     * Конструктор нового сервиса для товара, в который передается считыватель данных.
+     * Конструктор нового сервиса для товара, в который передаются данные из базы.
      *
-     * @param dataReader считыватель данных
+     * @param productDao считыватель данных
      */
-    public ProductServiceImpl(DataReader dataReader) {
-        this.dataReader = dataReader;
+    public ProductServiceImpl(ProductDao productDao) {
+        this.productDao = productDao;
     }
 
     //------------------------------------------------------------------------------------------------
 
     @Override
     public Product findOneById(Integer id) {
-        if (ParameterUtils.containsId(findAll(), id)) {
-            return findAll().stream()
-                    .filter(product -> product.getId().equals(id))
-                    .findFirst()
-                    .get();
+        Optional<Product> optionalProduct = productDao.findById(id);
+        if (optionalProduct.isPresent()) {
+            return optionalProduct.get();
         }
         throw new ParameterNotFoundException("Присутствуют товары, отсутствующие в каталоге!");
     }
 
     @Override
     public List<Product> findAll() {
-        List<String> lineList = dataReader.getProducts();
-        if (!lineList.isEmpty()) {
-            List<Product> productList = new ArrayList<>(lineList.size());
-            lineList.stream()
-                    .map(line -> line.split(Constants.SEPARATOR))
-                    .forEach(array -> productList.add(
-                            new Product(
-                                    Integer.parseInt(array[0]),         //id product
-                                    array[1],                           //name
-                                    Double.parseDouble(array[2])        //price
-                            )));
-            return productList;
-        }
+//        List<String> lineList = dataReader.getProducts();
+//        if (!lineList.isEmpty()) {
+//            List<Product> productList = new ArrayList<>(lineList.size());
+//            lineList.stream()
+//                    .map(line -> line.split(Constants.SEPARATOR))
+//                    .forEach(array -> productList.add(
+//                            new Product(
+//                                    Integer.parseInt(array[0]),         //id product
+//                                    array[1],                           //name
+//                                    Double.parseDouble(array[2])        //price
+//                            )));
+//            return productList;
+//        }
         throw new ParameterNotFoundException("Ошибка чтения каталога товаров!");
     }
 }
