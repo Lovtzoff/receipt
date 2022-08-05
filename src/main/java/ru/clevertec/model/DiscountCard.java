@@ -1,7 +1,6 @@
 package ru.clevertec.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.clevertec.model.parent.BaseModel;
 
@@ -14,7 +13,6 @@ import java.util.Objects;
  * @author Ловцов Алексей
  * @see BaseModel
  */
-@NoArgsConstructor
 @Getter
 @Setter
 public class DiscountCard extends BaseModel {
@@ -23,6 +21,14 @@ public class DiscountCard extends BaseModel {
      * Скидка.
      */
     private Integer discount;
+
+    /**
+     * Конструктор пустой скидочной карты.
+     */
+    public DiscountCard() {
+        super(0);
+        this.discount = 0;
+    }
 
     /**
      * Конструктор новой скидочной карты.
