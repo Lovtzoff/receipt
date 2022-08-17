@@ -37,19 +37,19 @@ class DiscountCardServiceTest {
 
     @Test
     void findOneByIdTestForNull() {
-        Assertions.assertNull(discountCardService.findOneById(1136).getId());
-        Assertions.assertNull(discountCardService.findOneById(1136).getDiscount());
+        Assertions.assertEquals(0, discountCardService.findOneById(1136).getId());
+        Assertions.assertEquals(0, discountCardService.findOneById(1136).getDiscount());
     }
 
     static IntStream generateMissingIds() {
-        return IntStream.range(31, 35);
+        return IntStream.range(31, 33);
     }
 
     @ParameterizedTest
     @MethodSource("generateMissingIds")
     void findOneByIdTestForNull1(Integer missingId) {
-        Assertions.assertNull(discountCardService.findOneById(missingId).getId());
-        Assertions.assertNull(discountCardService.findOneById(missingId).getDiscount());
+        Assertions.assertEquals(0, discountCardService.findOneById(missingId).getId());
+        Assertions.assertEquals(0, discountCardService.findOneById(missingId).getDiscount());
     }
 
     @Test
