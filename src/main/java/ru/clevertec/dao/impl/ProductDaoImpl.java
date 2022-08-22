@@ -1,21 +1,27 @@
 package ru.clevertec.dao.impl;
 
+import org.intellij.lang.annotations.Language;
 import ru.clevertec.dao.ProductDao;
 import ru.clevertec.model.Product;
 import ru.clevertec.util.DBConnectionPool;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ProductDaoImpl implements ProductDao {
 
+    @Language("SQL")
     private static final String FIND_BY_ID = "SELECT * FROM product WHERE id = ?";
+    @Language("SQL")
     private static final String FIND_ALL = "SELECT * FROM product";
+    @Language("SQL")
+    private static final String ADD_PRODUCT = "INSERT INTO product (productName, price) VALUES (?, ?)";
+    @Language("SQL")
+    private static final String UPDATE_PRODUCT = "UPDATE product SET productName = ?, price = ? WHERE id = ?";
+    @Language("SQL")
+    private static final String DELETE_PRODUCT_BY_ID = "DELETE FROM product WHERE id = ?";
 
     private final Connection connection = DBConnectionPool.INSTANCE.getConnection();
 
@@ -51,6 +57,47 @@ public class ProductDaoImpl implements ProductDao {
                 products.add(product);
             }
             return products;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Product add(Product product) {
+        try (PreparedStatement statement = connection.prepareStatement(ADD_PRODUCT, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, product.getName());
+            statement.setDouble(2, product.getPrice());
+            statement.executeUpdate();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                final int key = generatedKeys.getInt(1);
+                product.setId(key);
+            }
+            return product;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Optional<Product> update(Product product, Integer id) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCT)) {
+            statement.setString(1, product.getName());
+            statement.setDouble(2, product.getPrice());
+            statement.setInt(3, id);
+            statement.executeUpdate();
+            product.setId(id);
+            return Optional.of(product);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void delete(Integer id) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_PRODUCT_BY_ID)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

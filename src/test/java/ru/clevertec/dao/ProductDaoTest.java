@@ -38,4 +38,22 @@ class ProductDaoTest {
         IntStream.range(0, productList.size())
                 .forEach(i -> Assertions.assertEquals(productList.get(i), productDao.findAll().get(i)));
     }
+
+    @Test
+    void add() {
+        Product product = new Product();
+        product.setName("Вагонка СЛ (Осина) СОРТ \"АВ\" 16х94(85)х2000мм (8шт.)");
+        product.setPrice(26.84);
+        productDao.add(product);
+        System.out.println(product);
+    }
+
+    @Test
+    void update() {
+    }
+
+    @Test
+    void delete() {
+        productDao.delete(productDao.findAll().size() + 1);
+    }
 }

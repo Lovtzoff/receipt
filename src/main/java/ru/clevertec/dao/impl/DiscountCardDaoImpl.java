@@ -1,5 +1,6 @@
 package ru.clevertec.dao.impl;
 
+import org.intellij.lang.annotations.Language;
 import ru.clevertec.dao.DiscountCardDao;
 import ru.clevertec.model.DiscountCard;
 import ru.clevertec.util.DBConnectionPool;
@@ -14,7 +15,9 @@ import java.util.Optional;
 
 public class DiscountCardDaoImpl implements DiscountCardDao {
 
+    @Language("SQL")
     private static final String FIND_BY_ID = "SELECT * FROM DiscountCard WHERE id = ?";
+    @Language("SQL")
     private static final String FIND_ALL = "SELECT * FROM DiscountCard";
 
     private final Connection connection = DBConnectionPool.INSTANCE.getConnection();

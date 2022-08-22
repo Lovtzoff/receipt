@@ -10,4 +10,10 @@ public interface ProductDao {
     Optional<Product> findById(Integer id);
 
     List<Product> findAll();
+
+    Product add(Product product);
+
+    Optional<Product> update(Product product, Integer id);
+
+    void delete(Integer id);
 }
