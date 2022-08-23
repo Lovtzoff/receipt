@@ -1,9 +1,6 @@
 package ru.clevertec.dao;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.clevertec.dao.impl.ProductDaoImpl;
 import ru.clevertec.model.Product;
 import ru.clevertec.util.ProductUtils;
@@ -40,6 +37,7 @@ class ProductDaoTest {
     }
 
     @Test
+    @Disabled
     void add() {
         Product product = new Product();
         product.setName("Вагонка СЛ (Осина) СОРТ \"АВ\" 16х94(85)х2000мм (8шт.)");
@@ -49,11 +47,18 @@ class ProductDaoTest {
     }
 
     @Test
+    @Disabled
     void update() {
+        Product product = new Product();
+        product.setName("Брусок профилированный обрезной сухой береза 15х40х2000 мм");
+        product.setPrice(1.94);
+        productDao.update(product, 36);
+        System.out.println(product);
     }
 
     @Test
+    @Disabled
     void delete() {
-        productDao.delete(productDao.findAll().size() + 1);
+        productDao.delete(36);
     }
 }

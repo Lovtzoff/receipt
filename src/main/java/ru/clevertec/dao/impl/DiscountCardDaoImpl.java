@@ -5,10 +5,7 @@ import ru.clevertec.dao.DiscountCardDao;
 import ru.clevertec.model.DiscountCard;
 import ru.clevertec.util.DBConnectionPool;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +16,12 @@ public class DiscountCardDaoImpl implements DiscountCardDao {
     private static final String FIND_BY_ID = "SELECT * FROM DiscountCard WHERE id = ?";
     @Language("SQL")
     private static final String FIND_ALL = "SELECT * FROM DiscountCard";
+    @Language("SQL")
+    private static final String ADD_DISCOUNT_CARD = "INSERT INTO DiscountCard (discount) VALUES (?)";
+    @Language("SQL")
+    private static final String UPDATE_DISCOUNT_CARD = "UPDATE DiscountCard SET discount = ? WHERE id = ?";
+    @Language("SQL")
+    private static final String DELETE_DISCOUNT_CARD_BY_ID = "DELETE FROM DiscountCard WHERE id = ?";
 
     private final Connection connection = DBConnectionPool.INSTANCE.getConnection();
 
@@ -52,6 +55,48 @@ public class DiscountCardDaoImpl implements DiscountCardDao {
                 discountCards.add(discountCard);
             }
             return discountCards;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public DiscountCard add(DiscountCard discountCard) {
+        try (PreparedStatement statement = connection.prepareStatement(
+                ADD_DISCOUNT_CARD,
+                Statement.RETURN_GENERATED_KEYS)
+        ) {
+            statement.setInt(1, discountCard.getDiscount());
+            statement.executeUpdate();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                final int key = generatedKeys.getInt(1);
+                discountCard.setId(key);
+            }
+            return discountCard;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Optional<DiscountCard> update(DiscountCard discountCard, Integer id) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_DISCOUNT_CARD)) {
+            statement.setInt(1, discountCard.getDiscount());
+            statement.setInt(2, id);
+            statement.executeUpdate();
+            discountCard.setId(id);
+            return Optional.of(discountCard);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void delete(Integer id) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_DISCOUNT_CARD_BY_ID)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -10,4 +10,10 @@ public interface DiscountCardDao {
     Optional<DiscountCard> findById(Integer id);
 
     List<DiscountCard> findAll();
+
+    DiscountCard add(DiscountCard discountCard);
+
+    Optional<DiscountCard> update(DiscountCard discountCard, Integer id);
+
+    void delete(Integer id);
 }

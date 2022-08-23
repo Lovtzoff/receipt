@@ -59,7 +59,7 @@ public class Product extends BaseModel {
 
     @Override
     public String toString() {
-        return "id = " + getId() +
+        return "id = " + super.getId() +
                 ", name = " + name +
                 ", price = $" + price;
     }
