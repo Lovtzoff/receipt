@@ -1,11 +1,7 @@
 package ru.clevertec.service;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.clevertec.dao.impl.ProductDaoImpl;
-import ru.clevertec.data.impl.DataReaderImpl;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Product;
 import ru.clevertec.service.impl.ProductServiceImpl;
@@ -48,5 +44,31 @@ public class ProductServiceTest {
         Assertions.assertEquals(productList.size(), productService.findAll().size());
         IntStream.range(0, productList.size())
                 .forEach(i -> Assertions.assertEquals(productList.get(i), productService.findAll().get(i)));
+    }
+
+    @Test
+    @Disabled
+    void save() {
+        Product product = new Product();
+        product.setName("Вагонка СЛ (Осина) СОРТ \"АВ\" 16х94(85)х2000мм (8шт.)");
+        product.setPrice(26.84);
+        productService.save(product);
+        System.out.println(product);
+    }
+
+    @Test
+    @Disabled
+    void update() {
+        Product product = new Product();
+        product.setName("Брусок профилированный обрезной сухой береза 15х40х2000 мм");
+        product.setPrice(1.94);
+        productService.update(product, 36);
+        System.out.println(product);
+    }
+
+    @Test
+    @Disabled
+    void remove() {
+        productService.remove(36);
     }
 }

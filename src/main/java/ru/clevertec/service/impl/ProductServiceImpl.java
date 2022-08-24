@@ -49,4 +49,23 @@ public class ProductServiceImpl implements ProductService {
         }
         throw new ParameterNotFoundException("Ошибка чтения каталога товаров! База товаров пуста!");
     }
+
+    @Override
+    public Product save(Product product) {
+        return productDao.add(product);
+    }
+
+    @Override
+    public Product update(Product product, Integer id) {
+        Optional<Product> optionalProduct = productDao.findById(id);
+        if (optionalProduct.isPresent()) {
+            return productDao.update(product, id).get();
+        }
+        throw new ParameterNotFoundException("Товар отсутствует в базе!");
+    }
+
+    @Override
+    public void remove(Integer id) {
+        productDao.delete(id);
+    }
 }

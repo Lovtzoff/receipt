@@ -1,9 +1,6 @@
 package ru.clevertec.service;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.clevertec.dao.impl.DiscountCardDaoImpl;
@@ -57,5 +54,29 @@ class DiscountCardServiceTest {
         Assertions.assertEquals(discountCardList.size(), discountCardService.findAll().size());
         IntStream.range(0, discountCardList.size())
                 .forEach(i -> Assertions.assertEquals(discountCardList.get(i), discountCardService.findAll().get(i)));
+    }
+
+    @Test
+    @Disabled
+    void save() {
+        DiscountCard discountCard = new DiscountCard();
+        discountCard.setDiscount(15);
+        discountCardService.save(discountCard);
+        System.out.println(discountCard);
+    }
+
+    @Test
+    @Disabled
+    void update() {
+        DiscountCard discountCard = new DiscountCard();
+        discountCard.setDiscount(20);
+        discountCardService.update(discountCard, 32);
+        System.out.println(discountCard);
+    }
+
+    @Test
+    @Disabled
+    void remove() {
+        discountCardService.remove(32);
     }
 }

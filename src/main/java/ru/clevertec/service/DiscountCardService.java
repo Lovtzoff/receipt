@@ -25,4 +25,10 @@ public interface DiscountCardService {
      * @return список карт
      */
     List<DiscountCard> findAll();
+
+    DiscountCard save(DiscountCard discountCard);
+
+    DiscountCard update(DiscountCard discountCard, Integer id);
+
+    void remove(Integer id);
 }

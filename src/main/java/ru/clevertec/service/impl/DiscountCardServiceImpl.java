@@ -7,6 +7,7 @@ import ru.clevertec.service.DiscountCardService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Реализация интерфейса DiscountCardService.
@@ -50,5 +51,24 @@ public class DiscountCardServiceImpl implements DiscountCardService {
             System.out.println(ex.getMessage());
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public DiscountCard save(DiscountCard discountCard) {
+        return discountCardDao.add(discountCard);
+    }
+
+    @Override
+    public DiscountCard update(DiscountCard discountCard, Integer id) {
+        Optional<DiscountCard> optionalProduct = discountCardDao.findById(id);
+        if (optionalProduct.isPresent()) {
+            return discountCardDao.update(discountCard, id).get();
+        }
+        throw new ParameterNotFoundException("Карта отсутствует в базе!");
+    }
+
+    @Override
+    public void remove(Integer id) {
+        discountCardDao.delete(id);
     }
 }

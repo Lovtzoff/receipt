@@ -25,4 +25,10 @@ public interface ProductService {
      * @return список товаров
      */
     List<Product> findAll();
+
+    Product save(Product product);
+
+    Product update(Product product, Integer id);
+
+    void remove(Integer id);
 }
