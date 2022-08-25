@@ -27,7 +27,7 @@ public class ProductServiceTest {
 
     @Test
     void findOneByIdTest() {
-        Product product = new Product(15, "Миксер(Мешалка) для смешивания смесей 100*500", 84);
+        Product product = new Product(15, "Миксер(Мешалка) для смешивания смесей 100*500", 84.0);
         Assertions.assertEquals(product, productService.findOneById(15));
     }
 

@@ -25,7 +25,7 @@ class ProductDaoTest {
 
     @Test
     void findById() {
-        Product product = new Product(15, "Миксер(Мешалка) для смешивания смесей 100*500", 84);
+        Product product = new Product(15, "Миксер(Мешалка) для смешивания смесей 100*500", 84.0);
         Assertions.assertEquals(product, productDao.findById(15).get());
     }
 

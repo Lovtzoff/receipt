@@ -1,5 +1,6 @@
 package ru.clevertec.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.Objects;
  * @see BaseModel
  */
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Product extends BaseModel {
@@ -34,9 +36,9 @@ public class Product extends BaseModel {
      * @param id    идентификатор
      * @param name  название
      * @param price цена
-     * @see Product#Product(Integer, String, double)
+     * @see Product#Product(Integer, String, Double)
      */
-    public Product(Integer id, String name, double price) {
+    public Product(Integer id, String name, Double price) {
         super(id);
         this.name = name;
         this.price = price;
