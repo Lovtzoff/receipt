@@ -1,6 +1,10 @@
 package ru.clevertec.service.impl;
 
-import ru.clevertec.constants.Constants;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.properties.TextAlignment;
 import ru.clevertec.dao.impl.DiscountCardDaoImpl;
 import ru.clevertec.dao.impl.ProductDaoImpl;
 import ru.clevertec.model.*;
@@ -11,14 +15,20 @@ import ru.clevertec.util.wagu.Block;
 import ru.clevertec.util.wagu.Board;
 import ru.clevertec.util.wagu.Table;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import static ru.clevertec.constants.Constants.*;
 
 /**
  * Реализация интерфейса ReceiptService.
@@ -33,12 +43,12 @@ public class ReceiptServiceImpl implements ReceiptService {
         List<Products> productsList = new ArrayList<>();
         DiscountCard discountCard = new DiscountCard();
         for (String arg : args) {
-            String[] array = arg.split(Constants.ARG_SEPARATOR);
+            String[] array = arg.split(ARG_SEPARATOR);
             if (NumberUtils.isNumeric(array[0])) {
                 Product product = new ProductServiceImpl(
                         new ProductDaoImpl()).findOneById(Integer.parseInt(array[0]));
                 int count = (NumberUtils.isNumeric(array[1]) && Integer.parseInt(array[1]) != 0) ?
-                        Integer.parseInt(array[1]) : Constants.COUNT_DEFAULT;
+                        Integer.parseInt(array[1]) : COUNT_DEFAULT;
                 productsList.add(
                         new Products(
                                 count,
@@ -57,9 +67,9 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         return new Receipt(
                 new Header(),
-                new Cashier(Constants.ID_CASHIER_DEFAULT),
-                new SimpleDateFormat(Constants.DATE_PATTERN).format(new Date()),
-                new SimpleDateFormat(Constants.TIME_PATTERN).format(new Date()),
+                new Cashier(ID_CASHIER_DEFAULT),
+                new SimpleDateFormat(DATE_PATTERN).format(new Date()),
+                new SimpleDateFormat(TIME_PATTERN).format(new Date()),
                 productsList,
                 RoundingUtils.round(totalNoDiscount),
                 RoundingUtils.round(discount),
@@ -136,8 +146,30 @@ public class ReceiptServiceImpl implements ReceiptService {
         System.out.println(print);
 
         try {
-            Files.createDirectories(Paths.get(Constants.PRINT_DIR));
-            Files.write(Paths.get(Constants.RECEIPT_FILE), print.getBytes());
+            Path pathReceiptFile = Paths.get(RECEIPT_FILE);
+
+            Files.createDirectories(Paths.get(PRINT_DIR));
+            Files.write(pathReceiptFile, print.getBytes());
+
+            PdfDocument pdfDocument = new PdfDocument(new PdfWriter(RECEIPT_PDF));
+            Document document = new Document(pdfDocument);
+            document.setTextAlignment(TextAlignment.LEFT);
+            document.setFontSize((float) 8.0);
+            document.setLeftMargin((float) 40.0);
+            document.setRightMargin((float) 40.0);
+
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(Files.newInputStream(pathReceiptFile), StandardCharsets.UTF_8)
+            );
+            String line;
+            Paragraph para = new Paragraph();
+            while ((line = br.readLine()) != null) {
+                line = line.replace("\u0020", "\u00A0");
+                para.add(line + "\n");
+            }
+            document.add(para);
+            document.close();
+            br.close();
         } catch (IOException ex) {
             System.out.println("Error: " + ex.getMessage());
         }

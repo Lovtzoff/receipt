@@ -44,6 +44,9 @@ dependencies {
     // Servlet
     implementation group: 'javax', name: 'javaee-api', version: '8.0.1'
     implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+
+    // PDF
+    implementation 'com.itextpdf:itext7-core:7.2.3'
 }
 
 test {
