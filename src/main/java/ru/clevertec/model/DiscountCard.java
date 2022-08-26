@@ -1,5 +1,6 @@
 package ru.clevertec.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import ru.clevertec.model.parent.BaseModel;
@@ -13,6 +14,7 @@ import java.util.Objects;
  * @author Ловцов Алексей
  * @see BaseModel
  */
+@AllArgsConstructor
 @Getter
 @Setter
 public class DiscountCard extends BaseModel {
@@ -35,9 +37,9 @@ public class DiscountCard extends BaseModel {
      *
      * @param id       идентификатор
      * @param discount скидка
-     * @see DiscountCard#DiscountCard(Integer, int)
+     * @see DiscountCard#DiscountCard(Integer, Integer)
      */
-    public DiscountCard(Integer id, int discount) {
+    public DiscountCard(Integer id, Integer discount) {
         super(id);
         this.discount = discount;
     }
