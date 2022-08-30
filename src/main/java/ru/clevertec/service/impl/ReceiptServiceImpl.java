@@ -1,5 +1,7 @@
 package ru.clevertec.service.impl;
 
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -15,12 +17,8 @@ import ru.clevertec.util.wagu.Block;
 import ru.clevertec.util.wagu.Board;
 import ru.clevertec.util.wagu.Table;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -146,30 +144,19 @@ public class ReceiptServiceImpl implements ReceiptService {
         System.out.println(print);
 
         try {
-            Path pathReceiptFile = Paths.get(RECEIPT_FILE);
-
             Files.createDirectories(Paths.get(PRINT_DIR));
-            Files.write(pathReceiptFile, print.getBytes());
+            Files.write(Paths.get(RECEIPT_FILE), print.getBytes());
 
             PdfDocument pdfDocument = new PdfDocument(new PdfWriter(RECEIPT_PDF));
             Document document = new Document(pdfDocument);
-            document.setTextAlignment(TextAlignment.LEFT);
-            document.setFontSize((float) 8.0);
-            document.setLeftMargin((float) 40.0);
-            document.setRightMargin((float) 40.0);
+            PdfFont pdfFont = PdfFontFactory.createFont(FONT_COURIER, "Cp1251");
+            Paragraph paragraph = new Paragraph().setFont(pdfFont);
 
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(Files.newInputStream(pathReceiptFile), StandardCharsets.UTF_8)
-            );
-            String line;
-            Paragraph para = new Paragraph();
-            while ((line = br.readLine()) != null) {
-                line = line.replace("\u0020", "\u00A0");
-                para.add(line + "\n");
-            }
-            document.add(para);
+            paragraph.add(print.replace("\u0020", "\u00A0"));
+            document.setTextAlignment(TextAlignment.LEFT);
+            document.setFontSize((float) 7.0);
+            document.add(paragraph);
             document.close();
-            br.close();
         } catch (IOException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
