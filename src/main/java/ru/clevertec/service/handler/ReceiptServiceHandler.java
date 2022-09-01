@@ -2,9 +2,11 @@ package ru.clevertec.service.handler;
 
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.service.ReceiptService;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @Slf4j
@@ -20,15 +22,19 @@ public class ReceiptServiceHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        Gson parserGson = new Gson();
-        Object invoke = method.invoke(receiptService, args);
+        try {
+            Gson parserGson = new Gson();
+            Object invoke = method.invoke(receiptService, args);
 
-        String arguments = (args != null) ? parserGson.toJson(args) : EMPTY_STRING;
-        String result = (invoke != null) ? parserGson.toJson(invoke) : EMPTY_STRING;
+            String arguments = (args != null) ? parserGson.toJson(args) : EMPTY_STRING;
+            String result = (invoke != null) ? parserGson.toJson(invoke) : EMPTY_STRING;
 
-        log.info("{} args={}", method.getName(), arguments);
-        log.info("{} result={}", method.getName(), result);
+            log.info("{} args={}", method.getName(), arguments);
+            log.info("{} result={}", method.getName(), result);
 
-        return invoke;
+            return invoke;
+        } catch (InvocationTargetException invocationTargetException) {
+            throw invocationTargetException.getCause();
+        }
     }
 }
