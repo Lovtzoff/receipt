@@ -22,7 +22,9 @@ public class GetProductsServlet extends HttpServlet {
     @SneakyThrows
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        List<Product> products = productService.findAll();
+        String size = req.getParameter("size");
+        String page = req.getParameter("page");
+        List<Product> products = productService.findAll(size, page);
         String json = new Gson().toJson(products);
         try (PrintWriter writer = resp.getWriter()) {
             writer.write(json);

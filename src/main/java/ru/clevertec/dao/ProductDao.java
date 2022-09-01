@@ -9,7 +9,7 @@ public interface ProductDao {
 
     Optional<Product> findById(Integer id);
 
-    List<Product> findAll();
+    List<Product> findAll(Integer size, Integer page);
 
     Product add(Product product);
 

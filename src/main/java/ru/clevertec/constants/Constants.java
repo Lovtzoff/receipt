@@ -30,4 +30,7 @@ public class Constants {
     public static final int ID_CASHIER_DEFAULT = 32;
 
     public static final String FONT_COURIER = "src/main/resources/font/Courier10 Cyr BT.ttf";
+
+    public static final int DEFAULT_SIZE_PAGE = 20;
+    public static final int DEFAULT_PAGE = 0;
 }

@@ -8,6 +8,9 @@ import ru.clevertec.service.ProductService;
 import java.util.List;
 import java.util.Optional;
 
+import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
+import static ru.clevertec.constants.Constants.DEFAULT_SIZE_PAGE;
+
 /**
  * Реализация интерфейса ProductService.
  *
@@ -42,8 +45,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAll() {
-        List<Product> products = productDao.findAll();
+    public List<Product> findAll(String size, String page) {
+        int pageSize = (size != null) ? Integer.parseInt(size) : DEFAULT_SIZE_PAGE;
+        int pageNumber = (page != null) ? (Integer.parseInt(page) * pageSize) : DEFAULT_PAGE;
+
+        List<Product> products = productDao.findAll(pageSize, pageNumber);
         if (!products.isEmpty()) {
             return products;
         }

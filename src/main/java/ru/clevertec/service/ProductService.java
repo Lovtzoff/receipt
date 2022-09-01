@@ -24,7 +24,7 @@ public interface ProductService {
      *
      * @return список товаров
      */
-    List<Product> findAll();
+    List<Product> findAll(String size, String page);
 
     Product save(Product product);
 

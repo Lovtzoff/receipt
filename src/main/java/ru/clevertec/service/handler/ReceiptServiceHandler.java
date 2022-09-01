@@ -2,7 +2,6 @@ package ru.clevertec.service.handler;
 
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.service.ReceiptService;
 
 import java.lang.reflect.InvocationHandler;

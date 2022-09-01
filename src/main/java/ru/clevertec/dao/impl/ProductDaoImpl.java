@@ -15,7 +15,7 @@ public class ProductDaoImpl implements ProductDao {
     @Language("SQL")
     private static final String FIND_BY_ID = "SELECT * FROM product WHERE id = ?";
     @Language("SQL")
-    private static final String FIND_ALL = "SELECT * FROM product";
+    private static final String FIND_ALL = "SELECT * FROM product LIMIT (?) OFFSET (?)";
     @Language("SQL")
     private static final String ADD_PRODUCT = "INSERT INTO product (productName, price) VALUES (?, ?)";
     @Language("SQL")
@@ -45,8 +45,10 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public List<Product> findAll() {
+    public List<Product> findAll(Integer size, Integer page) {
         try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
+            statement.setInt(1, size);
+            statement.setInt(2, page);
             ResultSet resultSet = statement.executeQuery();
             List<Product> products = new ArrayList<>(resultSet.getFetchSize());
             while (resultSet.next()) {
