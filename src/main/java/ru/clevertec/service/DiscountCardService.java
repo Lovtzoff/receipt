@@ -24,7 +24,7 @@ public interface DiscountCardService {
      *
      * @return список карт
      */
-    List<DiscountCard> findAll();
+    List<DiscountCard> findAll(String size, String page);
 
     DiscountCard save(DiscountCard discountCard);
 

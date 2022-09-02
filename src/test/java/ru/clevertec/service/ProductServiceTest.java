@@ -41,9 +41,11 @@ public class ProductServiceTest {
 
     @Test
     void findAllTest() {
-//        Assertions.assertEquals(productList.size(), productService.findAll().size());
-//        IntStream.range(0, productList.size())
-//                .forEach(i -> Assertions.assertEquals(productList.get(i), productService.findAll().get(i)));
+        String pageSize = "30";
+        List<Product> products = productService.findAll(pageSize, null);
+        Assertions.assertEquals(productList.size(), products.size());
+        IntStream.range(0, Integer.parseInt(pageSize))
+                .forEach(i -> Assertions.assertEquals(productList.get(i), products.get(i)));
     }
 
     @Test

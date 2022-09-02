@@ -22,7 +22,9 @@ public class GetCardsServlet extends HttpServlet {
     @SneakyThrows
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        List<DiscountCard> discountCards = discountCardService.findAll();
+        String size = req.getParameter("size");
+        String page = req.getParameter("page");
+        List<DiscountCard> discountCards = discountCardService.findAll(size, page);
         String json = new Gson().toJson(discountCards);
         try (PrintWriter writer = resp.getWriter()) {
             writer.write(json);

@@ -9,7 +9,7 @@ public interface DiscountCardDao {
 
     Optional<DiscountCard> findById(Integer id);
 
-    List<DiscountCard> findAll();
+    List<DiscountCard> findAll(Integer size, Integer page);
 
     DiscountCard add(DiscountCard discountCard);
 

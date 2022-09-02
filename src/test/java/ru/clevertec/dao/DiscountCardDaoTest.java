@@ -8,6 +8,8 @@ import ru.clevertec.util.DiscountCardUtils;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
+
 class DiscountCardDaoTest {
 
     private final DiscountCardDao discountCardDao = new DiscountCardDaoImpl();
@@ -31,9 +33,11 @@ class DiscountCardDaoTest {
 
     @Test
     void findAll() {
-        Assertions.assertEquals(discountCardList.size(), discountCardDao.findAll().size());
-        IntStream.range(0, discountCardList.size())
-                .forEach(i -> Assertions.assertEquals(discountCardList.get(i), discountCardDao.findAll().get(i)));
+        int pageSize = 30;
+        List<DiscountCard> cards = discountCardDao.findAll(pageSize, DEFAULT_PAGE);
+        Assertions.assertEquals(discountCardList.size(), cards.size());
+        IntStream.range(0, pageSize)
+                .forEach(i -> Assertions.assertEquals(discountCardList.get(i), cards.get(i)));
     }
 
     @Test

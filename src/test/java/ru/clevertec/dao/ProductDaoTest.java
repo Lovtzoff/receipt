@@ -8,6 +8,8 @@ import ru.clevertec.util.ProductUtils;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
+
 class ProductDaoTest {
 
     private final ProductDao productDao = new ProductDaoImpl();
@@ -31,9 +33,11 @@ class ProductDaoTest {
 
     @Test
     void findAll() {
-//        Assertions.assertEquals(productList.size(), productDao.findAll().size());
-//        IntStream.range(0, productList.size())
-//                .forEach(i -> Assertions.assertEquals(productList.get(i), productDao.findAll().get(i)));
+        int pageSize = 30;
+        List<Product> products = productDao.findAll(pageSize, DEFAULT_PAGE);
+        Assertions.assertEquals(productList.size(), products.size());
+        IntStream.range(0, pageSize)
+                .forEach(i -> Assertions.assertEquals(productList.get(i), products.get(i)));
     }
 
     @Test

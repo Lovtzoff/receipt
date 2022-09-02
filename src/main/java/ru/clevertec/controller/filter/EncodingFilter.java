@@ -1,18 +1,21 @@
 package ru.clevertec.controller.filter;
 
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
-import java.io.IOException;
+import lombok.SneakyThrows;
 
-@WebFilter(urlPatterns = "/*")
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+
+@WebFilter("/*")
 public class EncodingFilter implements Filter {
 
+    @SneakyThrows
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json");
         chain.doFilter(request, response);
     }
 }

@@ -9,6 +9,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
+import static ru.clevertec.constants.Constants.DEFAULT_SIZE_PAGE;
+
 /**
  * Реализация интерфейса DiscountCardService.
  *
@@ -40,9 +43,12 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     }
 
     @Override
-    public List<DiscountCard> findAll() {
+    public List<DiscountCard> findAll(String size, String page) {
+        int pageSize = (size != null) ? Integer.parseInt(size) : DEFAULT_SIZE_PAGE;
+        int pageNumber = (page != null) ? (Integer.parseInt(page) * pageSize) : DEFAULT_PAGE;
+
         try {
-            List<DiscountCard> discountCards = discountCardDao.findAll();
+            List<DiscountCard> discountCards = discountCardDao.findAll(pageSize, pageNumber);
             if (!discountCards.isEmpty()) {
                 return discountCards;
             }

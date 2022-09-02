@@ -15,7 +15,7 @@ public class DiscountCardDaoImpl implements DiscountCardDao {
     @Language("SQL")
     private static final String FIND_BY_ID = "SELECT * FROM DiscountCard WHERE id = ?";
     @Language("SQL")
-    private static final String FIND_ALL = "SELECT * FROM DiscountCard";
+    private static final String FIND_ALL = "SELECT * FROM DiscountCard LIMIT (?) OFFSET (?)";
     @Language("SQL")
     private static final String ADD_DISCOUNT_CARD = "INSERT INTO DiscountCard (discount) VALUES (?)";
     @Language("SQL")
@@ -44,8 +44,10 @@ public class DiscountCardDaoImpl implements DiscountCardDao {
     }
 
     @Override
-    public List<DiscountCard> findAll() {
+    public List<DiscountCard> findAll(Integer size, Integer page) {
         try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
+            statement.setInt(1, size);
+            statement.setInt(2, page);
             ResultSet resultSet = statement.executeQuery();
             List<DiscountCard> discountCards = new ArrayList<>(resultSet.getFetchSize());
             while (resultSet.next()) {

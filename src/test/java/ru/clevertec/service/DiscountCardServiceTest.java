@@ -51,9 +51,11 @@ class DiscountCardServiceTest {
 
     @Test
     void findAllTest() {
-        Assertions.assertEquals(discountCardList.size(), discountCardService.findAll().size());
-        IntStream.range(0, discountCardList.size())
-                .forEach(i -> Assertions.assertEquals(discountCardList.get(i), discountCardService.findAll().get(i)));
+        String pageSize = "30";
+        List<DiscountCard> cards = discountCardService.findAll(pageSize, null);
+        Assertions.assertEquals(discountCardList.size(), cards.size());
+        IntStream.range(0, Integer.parseInt(pageSize))
+                .forEach(i -> Assertions.assertEquals(discountCardList.get(i), cards.get(i)));
     }
 
     @Test
