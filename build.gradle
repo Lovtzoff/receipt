@@ -9,6 +9,7 @@
 plugins {
     id 'receipt-download-plugin'
     id 'war'
+    id 'org.liquibase.gradle' version '2.0.4'
 }
 
 repositories {
@@ -47,11 +48,29 @@ dependencies {
 
     // PDF
     implementation 'com.itextpdf:itext7-core:7.2.3'
+
+    // liquibase
+    liquibaseRuntime 'org.postgresql:postgresql:42.3.6'
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.14.0'
 }
 
 test {
     useJUnitPlatform()
 }
+
+task('deploy') {
+    liquibase {
+        activities {
+            main {
+                changeLogFile "src/main/resources/database/changelog/changelog-master.xml"
+                url "jdbc:postgresql://localhost:5432/receipt_repository"
+                username "postgres"
+                password "root"
+            }
+        }
+    }
+}
+compileJava.dependsOn(update).dependsOn(deploy)
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
