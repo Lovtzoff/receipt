@@ -1,5 +1,7 @@
 package ru.clevertec.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.clevertec.dao.DiscountCardDao;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.DiscountCard;
@@ -18,24 +20,14 @@ import static ru.clevertec.constants.Constants.DEFAULT_SIZE_PAGE;
  * @author Ловцов Алексей
  * @see DiscountCardService
  */
+@Service
+@RequiredArgsConstructor
 public class DiscountCardServiceImpl implements DiscountCardService {
 
     /**
      * Получение данных из базы.
      */
     private final DiscountCardDao discountCardDao;
-
-    /**
-     * Конструктор нового сервиса для скидочной карты, в который передаются данные из базы.
-     *
-     * @param discountCardDao считыватель данных
-     * @see DiscountCardServiceImpl#DiscountCardServiceImpl(DiscountCardDao)
-     */
-    public DiscountCardServiceImpl(DiscountCardDao discountCardDao) {
-        this.discountCardDao = discountCardDao;
-    }
-
-    //------------------------------------------------------------------------------------------------
 
     @Override
     public DiscountCard findOneById(Integer id) {

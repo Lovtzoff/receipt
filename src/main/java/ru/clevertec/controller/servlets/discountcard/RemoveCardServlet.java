@@ -1,19 +1,19 @@
 package ru.clevertec.controller.servlets.discountcard;
 
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import ru.clevertec.dao.impl.DiscountCardDaoImpl;
+import org.springframework.stereotype.Component;
 import ru.clevertec.service.DiscountCardService;
-import ru.clevertec.service.impl.DiscountCardServiceImpl;
 
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/api/card/remove")
+@Component
+@RequiredArgsConstructor
 public class RemoveCardServlet extends HttpServlet {
 
-    private final DiscountCardService discountCardService = new DiscountCardServiceImpl(new DiscountCardDaoImpl());
+    private final DiscountCardService discountCardService;
 
     @SneakyThrows
     @Override

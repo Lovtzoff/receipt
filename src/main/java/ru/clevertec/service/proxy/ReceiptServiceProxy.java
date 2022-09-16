@@ -1,5 +1,6 @@
 package ru.clevertec.service.proxy;
 
+import org.springframework.stereotype.Service;
 import ru.clevertec.model.Receipt;
 import ru.clevertec.service.ReceiptService;
 import ru.clevertec.service.handler.ReceiptServiceHandler;
@@ -7,6 +8,7 @@ import ru.clevertec.service.impl.ReceiptServiceImpl;
 
 import java.lang.reflect.Proxy;
 
+@Service("receiptServiceProxy")
 public class ReceiptServiceProxy implements ReceiptService {
 
     private static ReceiptService receiptService;

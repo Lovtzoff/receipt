@@ -1,5 +1,7 @@
 package ru.clevertec.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.clevertec.dao.ProductDao;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Product;
@@ -17,23 +19,14 @@ import static ru.clevertec.constants.Constants.DEFAULT_SIZE_PAGE;
  * @author Ловцов Алексей
  * @see ProductService
  */
+@Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     /**
      * Получение данных из базы.
      */
     private final ProductDao productDao;
-
-    /**
-     * Конструктор нового сервиса для товара, в который передаются данные из базы.
-     *
-     * @param productDao считыватель данных
-     */
-    public ProductServiceImpl(ProductDao productDao) {
-        this.productDao = productDao;
-    }
-
-    //------------------------------------------------------------------------------------------------
 
     @Override
     public Product findOneById(Integer id) {

@@ -1,19 +1,19 @@
 package ru.clevertec.controller.servlets.product;
 
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import ru.clevertec.dao.impl.ProductDaoImpl;
+import org.springframework.stereotype.Component;
 import ru.clevertec.service.ProductService;
-import ru.clevertec.service.impl.ProductServiceImpl;
 
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/api/product/remove")
+@Component
+@RequiredArgsConstructor
 public class RemoveProductServlet extends HttpServlet {
 
-    private final ProductService productService = new ProductServiceImpl(new ProductDaoImpl());
+    private final ProductService productService;
 
     @SneakyThrows
     @Override

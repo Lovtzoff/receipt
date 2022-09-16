@@ -15,6 +15,10 @@ plugins {
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    // spring
+    maven {
+        url = uri('https://repo.spring.io/libs-milestone/')
+    }
 }
 
 dependencies {
@@ -52,6 +56,11 @@ dependencies {
     // liquibase
     liquibaseRuntime 'org.postgresql:postgresql:42.3.6'
     liquibaseRuntime 'org.liquibase:liquibase-core:4.14.0'
+
+    // spring-core
+    implementation 'org.springframework:spring-core:5.3.23'
+    implementation 'org.springframework:spring-context:5.3.23'
+    implementation 'org.springframework:spring-web:5.3.23'
 }
 
 test {

@@ -2,13 +2,14 @@ package ru.clevertec.controller.servlets.receipt;
 
 import com.google.gson.Gson;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Receipt;
 import ru.clevertec.service.ReceiptService;
-import ru.clevertec.service.proxy.ReceiptServiceProxy;
 import ru.clevertec.validation.ParameterValidator;
 
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,10 +21,12 @@ import java.nio.file.Paths;
 import static ru.clevertec.constants.Constants.RECEIPT_PDF;
 import static ru.clevertec.constants.Constants.STRING_SEPARATOR;
 
-@WebServlet("/api/getReceipt")
-public class GetReceipt extends HttpServlet {
+@Component
+public class GetReceiptServlet extends HttpServlet {
 
-    private final ReceiptService receiptService = new ReceiptServiceProxy();
+    @Autowired
+    @Qualifier("receiptServiceProxy")
+    private ReceiptService receiptService;
 
     @SneakyThrows
     @Override

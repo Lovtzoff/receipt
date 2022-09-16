@@ -1,6 +1,7 @@
 package ru.clevertec.dao.impl;
 
 import org.intellij.lang.annotations.Language;
+import org.springframework.stereotype.Repository;
 import ru.clevertec.dao.DiscountCardDao;
 import ru.clevertec.model.DiscountCard;
 import ru.clevertec.util.DBConnectionPool;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class DiscountCardDaoImpl implements DiscountCardDao {
 
     @Language("SQL")

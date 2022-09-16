@@ -7,6 +7,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.TextAlignment;
+import org.springframework.stereotype.Service;
 import ru.clevertec.dao.impl.DiscountCardDaoImpl;
 import ru.clevertec.dao.impl.ProductDaoImpl;
 import ru.clevertec.model.*;
@@ -34,6 +35,7 @@ import static ru.clevertec.constants.Constants.*;
  * @author Ловцов Алексей
  * @see ReceiptService
  */
+@Service("receiptService")
 public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
