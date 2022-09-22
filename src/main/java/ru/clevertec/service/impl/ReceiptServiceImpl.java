@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import ru.clevertec.dao.impl.DiscountCardDaoImpl;
 import ru.clevertec.dao.impl.ProductDaoImpl;
 import ru.clevertec.model.*;
+import ru.clevertec.service.DiscountCardService;
+import ru.clevertec.service.ProductService;
 import ru.clevertec.service.ReceiptService;
 import ru.clevertec.util.NumberUtils;
 import ru.clevertec.util.RoundingUtils;
@@ -38,6 +40,9 @@ import static ru.clevertec.constants.Constants.*;
 @Service("receiptService")
 public class ReceiptServiceImpl implements ReceiptService {
 
+    private final ProductService productService = new ProductServiceImpl(new ProductDaoImpl());
+    private final DiscountCardService discountCardService = new DiscountCardServiceImpl(new DiscountCardDaoImpl());
+
     @Override
     public Receipt generateReceipt(String[] args) {
         List<Products> productsList = new ArrayList<>();
@@ -45,8 +50,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         for (String arg : args) {
             String[] array = arg.split(ARG_SEPARATOR);
             if (NumberUtils.isNumeric(array[0])) {
-                Product product = new ProductServiceImpl(
-                        new ProductDaoImpl()).findOneById(Integer.parseInt(array[0]));
+                Product product = productService.findOneById(Integer.parseInt(array[0]));
                 int count = (NumberUtils.isNumeric(array[1]) && Integer.parseInt(array[1]) != 0) ?
                         Integer.parseInt(array[1]) : COUNT_DEFAULT;
                 productsList.add(
@@ -58,7 +62,7 @@ public class ReceiptServiceImpl implements ReceiptService {
                 );
             } else if (array[0].equals("card")) {
                 int cardId = NumberUtils.isNumeric(array[1]) ? Integer.parseInt(array[1]) : 0;
-                discountCard = new DiscountCardServiceImpl(new DiscountCardDaoImpl()).findOneById(cardId);
+                discountCard = discountCardService.findOneById(cardId);
             }
         }
         double totalNoDiscount = productsList.stream().mapToDouble(Products::getTotalPrice).sum();
