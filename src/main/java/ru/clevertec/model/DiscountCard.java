@@ -1,11 +1,11 @@
 package ru.clevertec.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldDefaults;
 import ru.clevertec.model.parent.BaseModel;
-
-import java.util.Objects;
 
 /**
  * Класс модели скидочной карты с полем <b>id</b>, унаследованным от абстрактного класса BaseModel,
@@ -14,15 +14,16 @@ import java.util.Objects;
  * @author Ловцов Алексей
  * @see BaseModel
  */
+@Data
 @AllArgsConstructor
-@Getter
-@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@EqualsAndHashCode(callSuper = false)
 public class DiscountCard extends BaseModel {
 
     /**
      * Скидка.
      */
-    private Integer discount;
+    Integer discount;
 
     /**
      * Конструктор пустой скидочной карты.
@@ -42,20 +43,6 @@ public class DiscountCard extends BaseModel {
     public DiscountCard(Integer id, Integer discount) {
         super(id);
         this.discount = discount;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DiscountCard discountCard = (DiscountCard) o;
-        return getId().equals(discountCard.getId()) &&
-                getDiscount().equals(discountCard.getDiscount());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getDiscount());
     }
 
     @Override

@@ -46,10 +46,6 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
 
-    // Servlet
-    implementation group: 'javax', name: 'javaee-api', version: '8.0.1'
-    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
-
     // PDF
     implementation 'com.itextpdf:itext7-core:7.2.3'
 
@@ -57,10 +53,11 @@ dependencies {
     liquibaseRuntime 'org.postgresql:postgresql:42.3.6'
     liquibaseRuntime 'org.liquibase:liquibase-core:4.14.0'
 
-    // spring-core
-    implementation 'org.springframework:spring-core:5.3.23'
-    implementation 'org.springframework:spring-context:5.3.23'
-    implementation 'org.springframework:spring-web:5.3.23'
+    // spring
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.9'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.7.9'
 }
 
 test {
