@@ -1,11 +1,11 @@
-package ru.clevertec.dao;
+package ru.clevertec.repository;
 
 import ru.clevertec.model.Product;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductDao {
+public interface ProductDaoRepository {
 
     Optional<Product> findById(Integer id);
 

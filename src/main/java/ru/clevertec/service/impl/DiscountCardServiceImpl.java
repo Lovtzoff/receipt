@@ -2,7 +2,7 @@ package ru.clevertec.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.clevertec.dao.DiscountCardDao;
+import ru.clevertec.repository.DiscountCardRepository;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.DiscountCard;
 import ru.clevertec.service.DiscountCardService;
@@ -27,11 +27,11 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     /**
      * Получение данных из базы.
      */
-    private final DiscountCardDao discountCardDao;
+    private final DiscountCardRepository discountCardRepository;
 
     @Override
     public DiscountCard findOneById(Integer id) {
-        return discountCardDao.findById(id).orElse(new DiscountCard());
+        return discountCardRepository.findById(id).orElse(new DiscountCard());
     }
 
     @Override
@@ -40,7 +40,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         int pageNumber = (page != null) ? (Integer.parseInt(page) * pageSize) : DEFAULT_PAGE;
 
         try {
-            List<DiscountCard> discountCards = discountCardDao.findAll(pageSize, pageNumber);
+            List<DiscountCard> discountCards = discountCardRepository.findAll(pageSize, pageNumber);
             if (!discountCards.isEmpty()) {
                 return discountCards;
             }
@@ -53,20 +53,20 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public DiscountCard save(DiscountCard discountCard) {
-        return discountCardDao.add(discountCard);
+        return discountCardRepository.add(discountCard);
     }
 
     @Override
     public DiscountCard update(DiscountCard discountCard, Integer id) {
-        Optional<DiscountCard> optionalProduct = discountCardDao.findById(id);
+        Optional<DiscountCard> optionalProduct = discountCardRepository.findById(id);
         if (optionalProduct.isPresent()) {
-            return discountCardDao.update(discountCard, id).get();
+            return discountCardRepository.update(discountCard, id).get();
         }
         throw new ParameterNotFoundException("Карта отсутствует в базе!");
     }
 
     @Override
     public void remove(Integer id) {
-        discountCardDao.delete(id);
+        discountCardRepository.delete(id);
     }
 }

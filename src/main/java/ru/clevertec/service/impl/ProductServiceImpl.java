@@ -2,7 +2,7 @@ package ru.clevertec.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.clevertec.dao.ProductDao;
+import ru.clevertec.repository.ProductDaoRepository;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Product;
 import ru.clevertec.service.ProductService;
@@ -26,11 +26,11 @@ public class ProductServiceImpl implements ProductService {
     /**
      * Получение данных из базы.
      */
-    private final ProductDao productDao;
+    private final ProductDaoRepository productDaoRepository;
 
     @Override
     public Product findOneById(Integer id) {
-        Optional<Product> optionalProduct = productDao.findById(id);
+        Optional<Product> optionalProduct = productDaoRepository.findById(id);
         if (optionalProduct.isPresent()) {
             return optionalProduct.get();
         }
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
         int pageSize = (size != null) ? Integer.parseInt(size) : DEFAULT_SIZE_PAGE;
         int pageNumber = (page != null) ? (Integer.parseInt(page) * pageSize) : DEFAULT_PAGE;
 
-        List<Product> products = productDao.findAll(pageSize, pageNumber);
+        List<Product> products = productDaoRepository.findAll(pageSize, pageNumber);
         if (!products.isEmpty()) {
             return products;
         }
@@ -51,20 +51,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product save(Product product) {
-        return productDao.add(product);
+        return productDaoRepository.add(product);
     }
 
     @Override
     public Product update(Product product, Integer id) {
-        Optional<Product> optionalProduct = productDao.findById(id);
+        Optional<Product> optionalProduct = productDaoRepository.findById(id);
         if (optionalProduct.isPresent()) {
-            return productDao.update(product, id).get();
+            return productDaoRepository.update(product, id).get();
         }
         throw new ParameterNotFoundException("Товар отсутствует в базе!");
     }
 
     @Override
     public void remove(Integer id) {
-        productDao.delete(id);
+        productDaoRepository.delete(id);
     }
 }

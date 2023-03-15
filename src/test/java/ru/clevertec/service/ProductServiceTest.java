@@ -1,7 +1,7 @@
 package ru.clevertec.service;
 
 import org.junit.jupiter.api.*;
-import ru.clevertec.dao.impl.ProductDaoImpl;
+import ru.clevertec.repository.impl.ProductDaoRepositoryImpl;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Product;
 import ru.clevertec.service.impl.ProductServiceImpl;
@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 public class ProductServiceTest {
 
     static List<Product> productList;
-    ProductService productService = new ProductServiceImpl(new ProductDaoImpl());
+    ProductService productService = new ProductServiceImpl(new ProductDaoRepositoryImpl());
 
     @BeforeAll
     static void generateProducts() {

@@ -2,6 +2,7 @@ package ru.clevertec.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import ru.clevertec.model.parent.BaseModel;
 
 /**
@@ -35,6 +36,7 @@ public class Product extends BaseModel {
      * @param price цена
      * @see Product#Product(Integer, String, Double)
      */
+    @Builder
     public Product(Integer id, String name, Double price) {
         super(id);
         this.name = name;

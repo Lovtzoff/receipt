@@ -1,8 +1,8 @@
-package ru.clevertec.dao.impl;
+package ru.clevertec.repository.impl;
 
 import org.intellij.lang.annotations.Language;
 import org.springframework.stereotype.Repository;
-import ru.clevertec.dao.ProductDao;
+import ru.clevertec.repository.ProductDaoRepository;
 import ru.clevertec.model.Product;
 import ru.clevertec.util.DBConnectionPool;
 
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ProductDaoImpl implements ProductDao {
+public class ProductDaoRepositoryImpl implements ProductDaoRepository {
 
     @Language("SQL")
     private static final String FIND_BY_ID = "SELECT * FROM product WHERE id = ?";

@@ -1,9 +1,6 @@
 package ru.clevertec.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.clevertec.model.parent.BaseModel;
 
@@ -40,6 +37,7 @@ public class DiscountCard extends BaseModel {
      * @param discount скидка
      * @see DiscountCard#DiscountCard(Integer, Integer)
      */
+    @Builder
     public DiscountCard(Integer id, Integer discount) {
         super(id);
         this.discount = discount;

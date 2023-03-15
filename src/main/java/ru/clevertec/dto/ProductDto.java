@@ -15,6 +15,7 @@ import ru.clevertec.model.parent.BaseModel;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class ProductDto {
 
     /**

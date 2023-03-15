@@ -1,20 +1,20 @@
 package ru.clevertec.service;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import ru.clevertec.dao.impl.DiscountCardDaoImpl;
 import ru.clevertec.model.DiscountCard;
-import ru.clevertec.service.impl.DiscountCardServiceImpl;
 import ru.clevertec.util.DiscountCardUtils;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
+@RequiredArgsConstructor
 class DiscountCardServiceTest {
 
     static List<DiscountCard> discountCardList;
-    DiscountCardService discountCardService = new DiscountCardServiceImpl(new DiscountCardDaoImpl());
+    private final DiscountCardService discountCardService;
 
     @BeforeAll
     static void generateDiscountCards() {
