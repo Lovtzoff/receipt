@@ -2,13 +2,13 @@ package ru.clevertec.repository.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.intellij.lang.annotations.Language;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.clevertec.model.DiscountCard;
 import ru.clevertec.repository.DiscountCardRepository;
 import ru.clevertec.repository.rowmapper.DiscountCardRowMapper;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,13 +32,16 @@ public class DiscountCardRepositoryImpl implements DiscountCardRepository {
 
     @Override
     public Optional<DiscountCard> findById(Integer id) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(FIND_BY_ID, discountCardRowMapper));
+        try {
+            return Optional.of(jdbcTemplate.queryForObject(FIND_BY_ID, discountCardRowMapper, id));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<DiscountCard> findAll(Integer size, Integer page) {
-        // TODO: 15.03.2023 доделать
-        return Collections.emptyList();
+        return jdbcTemplate.query(FIND_ALL, discountCardRowMapper, size, page);
     }
 
     @Override

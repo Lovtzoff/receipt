@@ -10,6 +10,8 @@ plugins {
     id 'receipt-download-plugin'
     id 'war'
     id 'org.liquibase.gradle' version '2.0.4'
+    id 'org.springframework.boot' version '2.7.9'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 repositories {
@@ -24,21 +26,18 @@ repositories {
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
 
-    // Use JUnit test
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
-    testImplementation 'org.projectlombok:lombok:1.18.22'
-
+    // Use Spring test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:30.1-jre'
 
+    // lombok
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
-    // log
-    implementation 'org.slf4j:slf4j-log4j12:1.7.36'
 
     // jdbc
     implementation 'org.postgresql:postgresql:42.3.6'
@@ -56,12 +55,12 @@ dependencies {
 
     // spring
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.9'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.7.9'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
-test {
+tasks.named('test') {
     useJUnitPlatform()
 }
 
@@ -79,6 +78,6 @@ task('deploy') {
 }
 compileJava.dependsOn(update).dependsOn(deploy)
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }

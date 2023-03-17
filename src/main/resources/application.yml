@@ -1,6 +1,6 @@
 spring:
-  database:
+  datasource:
     url: jdbc:postgresql://localhost:5432/receipt_repository
-    user: postgres
+    username: postgres
     password: root
-    driver: org.postgresql.Driver
+    driver-class-name: org.postgresql.Driver

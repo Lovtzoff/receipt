@@ -1,7 +1,8 @@
 package ru.clevertec.repository;
 
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.clevertec.model.DiscountCard;
 import ru.clevertec.util.DiscountCardUtils;
 
@@ -10,10 +11,11 @@ import java.util.stream.IntStream;
 
 import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
 
-@RequiredArgsConstructor
+@SpringBootTest
 class DiscountCardRepositoryTest {
 
-    private final DiscountCardRepository discountCardRepository;
+    @Autowired
+    private DiscountCardRepository discountCardRepository;
     static List<DiscountCard> discountCardList;
 
     @BeforeAll
@@ -29,7 +31,8 @@ class DiscountCardRepositoryTest {
     @Test
     void findById() {
         DiscountCard discountCard = new DiscountCard(10, 9);
-        Assertions.assertEquals(discountCard, discountCardRepository.findById(10).get());
+        DiscountCard discountCardTest = discountCardRepository.findById(10).get();
+        Assertions.assertEquals(discountCard, discountCardTest);
     }
 
     @Test
