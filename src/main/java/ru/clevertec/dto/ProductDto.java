@@ -5,11 +5,10 @@ import lombok.experimental.FieldDefaults;
 import ru.clevertec.model.parent.BaseModel;
 
 /**
- * Класс товара с полем <b>id</b>, унаследованным от абстрактного класса BaseModel,
- * и полями <b>name</b>, и <b>price</b>.
+ * Класс транспортного слоя для передачи данных о товаре с полями <b>id</b>,
+ * <b>name</b>, и <b>price</b>.
  *
  * @author Ловцов Алексей
- * @see BaseModel
  */
 @Data
 @NoArgsConstructor

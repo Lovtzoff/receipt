@@ -4,19 +4,35 @@ import lombok.RequiredArgsConstructor;
 import org.intellij.lang.annotations.Language;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.clevertec.model.DiscountCard;
 import ru.clevertec.repository.DiscountCardRepository;
+import ru.clevertec.repository.preparedstatementcreator.DiscountCardPsc;
 import ru.clevertec.repository.rowmapper.DiscountCardRowMapper;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Реализация интерфейса DiscountCardRepository: отправка запросов к БД.
+ *
+ * @author Ловцов Алексей
+ * @see DiscountCardRepository
+ */
 @Repository
 @RequiredArgsConstructor
 public class DiscountCardRepositoryImpl implements DiscountCardRepository {
 
+    /**
+     * Объект для отправки SQL-запросов к БД.
+     */
     private final JdbcTemplate jdbcTemplate;
+    /**
+     * Объект для преобразования записи из таблицы БД в класс DiscountCard.
+     */
     private final DiscountCardRowMapper discountCardRowMapper;
 
     @Language("SQL")
@@ -46,18 +62,21 @@ public class DiscountCardRepositoryImpl implements DiscountCardRepository {
 
     @Override
     public DiscountCard add(DiscountCard discountCard) {
-        // TODO: 15.03.2023 доделать
-        return new DiscountCard();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(new DiscountCardPsc(ADD_DISCOUNT_CARD, discountCard), keyHolder);
+        discountCard.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
+        return discountCard;
     }
 
     @Override
     public Optional<DiscountCard> update(DiscountCard discountCard, Integer id) {
-        // TODO: 15.03.2023 доделать
-        return Optional.empty();
+        jdbcTemplate.update(UPDATE_DISCOUNT_CARD, discountCard.getDiscount(), id);
+        discountCard.setId(id);
+        return Optional.of(discountCard);
     }
 
     @Override
     public void delete(Integer id) {
-        // TODO: 15.03.2023 доделать
+        jdbcTemplate.update(DELETE_DISCOUNT_CARD_BY_ID, id);
     }
 }

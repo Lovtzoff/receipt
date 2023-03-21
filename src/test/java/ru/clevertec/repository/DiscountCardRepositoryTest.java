@@ -7,6 +7,7 @@ import ru.clevertec.model.DiscountCard;
 import ru.clevertec.util.DiscountCardUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
@@ -45,26 +46,21 @@ class DiscountCardRepositoryTest {
     }
 
     @Test
-    @Disabled
-    void add() {
+    void testAddUpdateDeleteMethods() {
+        // add method test
         DiscountCard discountCard = new DiscountCard();
         discountCard.setDiscount(15);
         discountCardRepository.add(discountCard);
-        System.out.println(discountCard);
-    }
+        int cardId = discountCard.getId();
+        Assertions.assertEquals(discountCard, discountCardRepository.findById(cardId).get());
 
-    @Test
-    @Disabled
-    void update() {
-        DiscountCard discountCard = new DiscountCard();
+        // update method test
         discountCard.setDiscount(20);
-        discountCardRepository.update(discountCard, 31);
-        System.out.println(discountCard);
-    }
+        discountCardRepository.update(discountCard, cardId);
+        Assertions.assertEquals(discountCard, discountCardRepository.findById(cardId).get());
 
-    @Test
-    @Disabled
-    void delete() {
-        discountCardRepository.delete(31);
+        // delete method test
+        discountCardRepository.delete(cardId);
+        Assertions.assertEquals(Optional.empty(), discountCardRepository.findById(cardId));
     }
 }

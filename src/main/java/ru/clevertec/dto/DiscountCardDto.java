@@ -4,8 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 /**
- * Класс модели скидочной карты с полем <b>id</b>, унаследованным от абстрактного класса BaseModel,
- * и полем <b>discount</b>.
+ * Класс транспортного слоя для передачи данных о дисконтной карте с полями <b>id</b>
+ * и <b>discount</b>.
  *
  * @author Ловцов Алексей
  */
