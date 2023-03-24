@@ -1,7 +1,11 @@
 package ru.clevertec.dao;
 
-import org.junit.jupiter.api.*;
-import ru.clevertec.dao.impl.ProductDaoImpl;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.clevertec.model.Product;
 import ru.clevertec.util.ProductUtils;
 
@@ -10,9 +14,11 @@ import java.util.stream.IntStream;
 
 import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
 
+@SpringBootTest(classes = ru.clevertec.config.ApplicationConfiguration.class)
 class ProductDaoTest {
 
-    private final ProductDao productDao = new ProductDaoImpl();
+    @Autowired
+    private ProductDao productDao;
     static List<Product> productList;
 
     @BeforeAll
@@ -40,29 +46,29 @@ class ProductDaoTest {
                 .forEach(i -> Assertions.assertEquals(productList.get(i), products.get(i)));
     }
 
-    @Test
-    @Disabled
-    void add() {
-        Product product = new Product();
-        product.setName("Вагонка СЛ (Осина) СОРТ \"АВ\" 16х94(85)х2000мм (8шт.)");
-        product.setPrice(26.84);
-        productDao.add(product);
-        System.out.println(product);
-    }
-
-    @Test
-    @Disabled
-    void update() {
-        Product product = new Product();
-        product.setName("Брусок профилированный обрезной сухой береза 15х40х2000 мм");
-        product.setPrice(1.94);
-        productDao.update(product, 36);
-        System.out.println(product);
-    }
-
-    @Test
-    @Disabled
-    void delete() {
-        productDao.delete(36);
-    }
+//    @Test
+//    @Disabled
+//    void add() {
+//        Product product = new Product();
+//        product.setName("Вагонка СЛ (Осина) СОРТ \"АВ\" 16х94(85)х2000мм (8шт.)");
+//        product.setPrice(26.84);
+//        productDao.add(product);
+//        System.out.println(product);
+//    }
+//
+//    @Test
+//    @Disabled
+//    void update() {
+//        Product product = new Product();
+//        product.setName("Брусок профилированный обрезной сухой береза 15х40х2000 мм");
+//        product.setPrice(1.94);
+//        productDao.update(product, 36);
+//        System.out.println(product);
+//    }
+//
+//    @Test
+//    @Disabled
+//    void delete() {
+//        productDao.delete(36);
+//    }
 }

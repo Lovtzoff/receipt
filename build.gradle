@@ -10,6 +10,8 @@ plugins {
     id 'receipt-download-plugin'
     id 'war'
     id 'org.liquibase.gradle' version '2.0.4'
+    id 'org.springframework.boot' version '2.7.9'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
 repositories {
@@ -24,31 +26,28 @@ repositories {
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
 
-    // Use JUnit test
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
-
+    // Use Spring test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:30.1-jre'
 
+    // lombok
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
-
-    // log
-    implementation 'org.slf4j:slf4j-log4j12:1.7.36'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
     // jdbc
     implementation 'org.postgresql:postgresql:42.3.6'
 
     // Gson
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     // Servlet
-    implementation group: 'javax', name: 'javaee-api', version: '8.0.1'
-    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    implementation 'javax:javaee-api:8.0.1'
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
 
     // PDF
     implementation 'com.itextpdf:itext7-core:7.2.3'
@@ -57,13 +56,18 @@ dependencies {
     liquibaseRuntime 'org.postgresql:postgresql:42.3.6'
     liquibaseRuntime 'org.liquibase:liquibase-core:4.14.0'
 
-    // spring-core
-    implementation 'org.springframework:spring-core:5.3.23'
-    implementation 'org.springframework:spring-context:5.3.23'
-    implementation 'org.springframework:spring-web:5.3.23'
+    // wagu
+    // https://github.com/thedathoudarya/WAGU-data-in-table-view
+    implementation fileTree(dir: 'lib', include: ['*.jar'])
+
+    // spring
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
-test {
+tasks.named('test') {
     useJUnitPlatform()
 }
 
@@ -81,6 +85,6 @@ task('deploy') {
 }
 compileJava.dependsOn(update).dependsOn(deploy)
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }

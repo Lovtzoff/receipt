@@ -1,7 +1,11 @@
 package ru.clevertec.dao;
 
-import org.junit.jupiter.api.*;
-import ru.clevertec.dao.impl.DiscountCardDaoImpl;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.clevertec.model.DiscountCard;
 import ru.clevertec.util.DiscountCardUtils;
 
@@ -10,9 +14,11 @@ import java.util.stream.IntStream;
 
 import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
 
+@SpringBootTest(classes = ru.clevertec.config.ApplicationConfiguration.class)
 class DiscountCardDaoTest {
 
-    private final DiscountCardDao discountCardDao = new DiscountCardDaoImpl();
+    @Autowired
+    private DiscountCardDao discountCardDao;
     static List<DiscountCard> discountCardList;
 
     @BeforeAll
@@ -40,27 +46,27 @@ class DiscountCardDaoTest {
                 .forEach(i -> Assertions.assertEquals(discountCardList.get(i), cards.get(i)));
     }
 
-    @Test
-    @Disabled
-    void add() {
-        DiscountCard discountCard = new DiscountCard();
-        discountCard.setDiscount(15);
-        discountCardDao.add(discountCard);
-        System.out.println(discountCard);
-    }
-
-    @Test
-    @Disabled
-    void update() {
-        DiscountCard discountCard = new DiscountCard();
-        discountCard.setDiscount(20);
-        discountCardDao.update(discountCard, 31);
-        System.out.println(discountCard);
-    }
-
-    @Test
-    @Disabled
-    void delete() {
-        discountCardDao.delete(31);
-    }
+//    @Test
+//    @Disabled
+//    void add() {
+//        DiscountCard discountCard = new DiscountCard();
+//        discountCard.setDiscount(15);
+//        discountCardDao.add(discountCard);
+//        System.out.println(discountCard);
+//    }
+//
+//    @Test
+//    @Disabled
+//    void update() {
+//        DiscountCard discountCard = new DiscountCard();
+//        discountCard.setDiscount(20);
+//        discountCardDao.update(discountCard, 31);
+//        System.out.println(discountCard);
+//    }
+//
+//    @Test
+//    @Disabled
+//    void delete() {
+//        discountCardDao.delete(31);
+//    }
 }

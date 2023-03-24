@@ -7,18 +7,17 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.TextAlignment;
+import com.wagu.Block;
+import com.wagu.Board;
+import com.wagu.Table;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.clevertec.dao.impl.DiscountCardDaoImpl;
-import ru.clevertec.dao.impl.ProductDaoImpl;
 import ru.clevertec.model.*;
 import ru.clevertec.service.DiscountCardService;
 import ru.clevertec.service.ProductService;
 import ru.clevertec.service.ReceiptService;
 import ru.clevertec.util.NumberUtils;
 import ru.clevertec.util.RoundingUtils;
-import ru.clevertec.util.wagu.Block;
-import ru.clevertec.util.wagu.Board;
-import ru.clevertec.util.wagu.Table;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,11 +36,12 @@ import static ru.clevertec.constants.Constants.*;
  * @author Ловцов Алексей
  * @see ReceiptService
  */
-@Service("receiptService")
+@Service
+@RequiredArgsConstructor
 public class ReceiptServiceImpl implements ReceiptService {
 
-    private final ProductService productService = new ProductServiceImpl(new ProductDaoImpl());
-    private final DiscountCardService discountCardService = new DiscountCardServiceImpl(new DiscountCardDaoImpl());
+    private final ProductService productService;
+    private final DiscountCardService discountCardService;
 
     @Override
     public Receipt generateReceipt(String[] args) {
