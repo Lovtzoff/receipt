@@ -1,9 +1,7 @@
 package ru.clevertec.model.parent;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 /**
  * Абстрактный класс BaseModel с полем <b>id</b>.
@@ -14,10 +12,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class BaseModel {
 
     /**
      * Идентификатор.
      */
-    private Integer id;
+    Integer id;
 }

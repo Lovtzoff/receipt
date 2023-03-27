@@ -1,5 +1,6 @@
 package ru.clevertec.model;
 
+import lombok.EqualsAndHashCode;
 import ru.clevertec.model.parent.BaseModel;
 
 import java.util.Objects;
@@ -10,6 +11,7 @@ import java.util.Objects;
  * @author Ловцов Алексей
  * @see BaseModel
  */
+@EqualsAndHashCode(callSuper = false)
 public class Cashier extends BaseModel {
 
     /**
@@ -20,19 +22,6 @@ public class Cashier extends BaseModel {
      */
     public Cashier(Integer id) {
         super(id);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cashier cashier = (Cashier) o;
-        return getId().equals(cashier.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
     }
 
     @Override

@@ -1,12 +1,8 @@
 package ru.clevertec.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.clevertec.model.parent.BaseModel;
-
-import java.util.Objects;
 
 /**
  * Класс товара с полем <b>id</b>, унаследованным от абстрактного класса BaseModel,
@@ -15,20 +11,21 @@ import java.util.Objects;
  * @author Ловцов Алексей
  * @see BaseModel
  */
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@EqualsAndHashCode(callSuper = false)
 public class Product extends BaseModel {
 
     /**
      * Название.
      */
-    private String name;
+    String name;
     /**
      * Цена за единицу товара.
      */
-    private Double price;
+    Double price;
 
     /**
      * Конструктор нового товара.
@@ -38,25 +35,11 @@ public class Product extends BaseModel {
      * @param price цена
      * @see Product#Product(Integer, String, Double)
      */
+    @Builder
     public Product(Integer id, String name, Double price) {
         super(id);
         this.name = name;
         this.price = price;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return getId().equals(product.getId()) &&
-                getName().equals(product.getName()) &&
-                getPrice().equals(product.getPrice());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getPrice());
     }
 
     @Override
