@@ -7,8 +7,6 @@ package ru.clevertec.constants;
  */
 public class Constants {
 
-    private static final String DATA_DIR = "data";
-
     public static final String PRINT_DIR = "print";
     public static final String RECEIPT_FILE = PRINT_DIR + "/receipt.print";
     public static final String RECEIPT_PDF = PRINT_DIR + "/receipt.pdf";

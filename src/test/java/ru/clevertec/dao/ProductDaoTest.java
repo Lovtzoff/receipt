@@ -10,6 +10,7 @@ import ru.clevertec.model.Product;
 import ru.clevertec.util.ProductUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
@@ -46,29 +47,24 @@ class ProductDaoTest {
                 .forEach(i -> Assertions.assertEquals(productList.get(i), products.get(i)));
     }
 
-//    @Test
-//    @Disabled
-//    void add() {
-//        Product product = new Product();
-//        product.setName("Вагонка СЛ (Осина) СОРТ \"АВ\" 16х94(85)х2000мм (8шт.)");
-//        product.setPrice(26.84);
-//        productDao.add(product);
-//        System.out.println(product);
-//    }
-//
-//    @Test
-//    @Disabled
-//    void update() {
-//        Product product = new Product();
-//        product.setName("Брусок профилированный обрезной сухой береза 15х40х2000 мм");
-//        product.setPrice(1.94);
-//        productDao.update(product, 36);
-//        System.out.println(product);
-//    }
-//
-//    @Test
-//    @Disabled
-//    void delete() {
-//        productDao.delete(36);
-//    }
+    @Test
+    void testAddUpdateDeleteMethods() {
+        // add method test
+        Product product = new Product();
+        product.setName("Вагонка СЛ (Осина) СОРТ \"АВ\" 16х94(85)х2000мм (8шт.)");
+        product.setPrice(26.84);
+        productDao.add(product);
+        int productId = product.getId();
+        Assertions.assertEquals(product, productDao.findById(productId).get());
+
+        // update method test
+        product.setName("Брусок профилированный обрезной сухой береза 15х40х2000 мм");
+        product.setPrice(1.94);
+        productDao.update(product, productId);
+        Assertions.assertEquals(product, productDao.findById(productId).get());
+
+        // delete method test
+        productDao.delete(productId);
+        Assertions.assertEquals(Optional.empty(), productDao.findById(productId));
+    }
 }
