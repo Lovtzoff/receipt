@@ -29,4 +29,12 @@ public class Header {
      * Телефон.
      */
     final String tel = "123-456-7890";
+
+    @Override
+    public String toString() {
+        return shopName + "\n" +
+                City + "\n" +
+                Street + "\n" +
+                "Tel: " + tel;
+    }
 }

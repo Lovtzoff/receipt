@@ -1,18 +1,27 @@
 package ru.clevertec.dao.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.intellij.lang.annotations.Language;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.clevertec.dao.ProductDao;
+import ru.clevertec.dao.psc.ProductPsc;
+import ru.clevertec.dao.rowmapper.ProductRowMapper;
 import ru.clevertec.model.Product;
-import ru.clevertec.util.DBConnectionPool;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class ProductDaoImpl implements ProductDao {
+
+    private final JdbcTemplate jdbcTemplate;
+    private final ProductRowMapper productRowMapper;
 
     @Language("SQL")
     private static final String FIND_BY_ID = "SELECT * FROM product WHERE id = ?";
@@ -25,85 +34,37 @@ public class ProductDaoImpl implements ProductDao {
     @Language("SQL")
     private static final String DELETE_PRODUCT_BY_ID = "DELETE FROM product WHERE id = ?";
 
-    private final Connection connection = DBConnectionPool.INSTANCE.getConnection();
-
     @Override
     public Optional<Product> findById(Integer id) {
-        Optional<Product> optionalProduct = Optional.empty();
-        try (PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                Product product = new Product();
-                product.setId(resultSet.getInt("id"));
-                product.setName(resultSet.getString("productName"));
-                product.setPrice(resultSet.getDouble("price"));
-                optionalProduct = Optional.of(product);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(FIND_BY_ID, productRowMapper, id));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
         }
-        return optionalProduct;
     }
 
     @Override
     public List<Product> findAll(Integer size, Integer page) {
-        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL)) {
-            statement.setInt(1, size);
-            statement.setInt(2, page);
-            ResultSet resultSet = statement.executeQuery();
-            List<Product> products = new ArrayList<>(resultSet.getFetchSize());
-            while (resultSet.next()) {
-                Product product = new Product();
-                product.setId(resultSet.getInt("id"));
-                product.setName(resultSet.getString("productName"));
-                product.setPrice(resultSet.getDouble("price"));
-                products.add(product);
-            }
-            return products;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return jdbcTemplate.query(FIND_ALL, productRowMapper, size, page);
     }
 
     @Override
     public Product add(Product product) {
-        try (PreparedStatement statement = connection.prepareStatement(ADD_PRODUCT, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, product.getName());
-            statement.setDouble(2, product.getPrice());
-            statement.executeUpdate();
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                final int key = generatedKeys.getInt(1);
-                product.setId(key);
-            }
-            return product;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(new ProductPsc(ADD_PRODUCT, product), keyHolder);
+        product.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
+        return product;
     }
 
     @Override
     public Optional<Product> update(Product product, Integer id) {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCT)) {
-            statement.setString(1, product.getName());
-            statement.setDouble(2, product.getPrice());
-            statement.setInt(3, id);
-            statement.executeUpdate();
-            product.setId(id);
-            return Optional.of(product);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        jdbcTemplate.update(UPDATE_PRODUCT, product.getName(), product.getPrice(), id);
+        product.setId(id);
+        return Optional.of(product);
     }
 
     @Override
     public void delete(Integer id) {
-        try (PreparedStatement statement = connection.prepareStatement(DELETE_PRODUCT_BY_ID)) {
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        jdbcTemplate.update(DELETE_PRODUCT_BY_ID, id);
     }
 }
