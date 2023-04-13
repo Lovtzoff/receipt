@@ -3,8 +3,6 @@ package ru.clevertec.model;
 import lombok.EqualsAndHashCode;
 import ru.clevertec.model.parent.BaseModel;
 
-import java.util.Objects;
-
 /**
  * Класс модели кассира с полем <b>id</b>, унаследованным от абстрактного класса BaseModel.
  *

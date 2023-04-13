@@ -8,7 +8,6 @@ import ru.clevertec.controller.servlets.product.*;
 import ru.clevertec.controller.servlets.receipt.GetReceiptServlet;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 public class AnnotationWebApplicationInitializer implements WebApplicationInitializer {
@@ -20,11 +19,11 @@ public class AnnotationWebApplicationInitializer implements WebApplicationInitia
         context.refresh();
 
         // DiscountCard
-        AddCardServlet addCardServlet = (AddCardServlet) context.getBean("addCardServlet");
-        GetCardServlet getCardServlet = (GetCardServlet) context.getBean("getCardServlet");
-        GetCardsServlet getCardsServlet = (GetCardsServlet) context.getBean("getCardsServlet");
-        RemoveCardServlet removeCardServlet = (RemoveCardServlet) context.getBean("removeCardServlet");
-        UpdateCardServlet updateCardServlet = (UpdateCardServlet) context.getBean("updateCardServlet");
+        AddCardServlet addCardServlet = context.getBean(AddCardServlet.class);
+        GetCardServlet getCardServlet = context.getBean(GetCardServlet.class);
+        GetCardsServlet getCardsServlet = context.getBean(GetCardsServlet.class);
+        RemoveCardServlet removeCardServlet = context.getBean(RemoveCardServlet.class);
+        UpdateCardServlet updateCardServlet = context.getBean(UpdateCardServlet.class);
 
         ServletRegistration.Dynamic addCard = servletContext.addServlet("addCardServlet", addCardServlet);
         ServletRegistration.Dynamic getCard = servletContext.addServlet("getCardServlet", getCardServlet);
@@ -41,13 +40,11 @@ public class AnnotationWebApplicationInitializer implements WebApplicationInitia
         updateCard.addMapping("/api/card/update");
 
         // Product
-        AddProductServlet addProductServlet = (AddProductServlet) context.getBean("addProductServlet");
-        GetProductServlet getProductServlet = (GetProductServlet) context.getBean("getProductServlet");
-        GetProductsServlet getProductsServlet = (GetProductsServlet) context.getBean("getProductsServlet");
-        RemoveProductServlet removeProductServlet =
-                (RemoveProductServlet) context.getBean("removeProductServlet");
-        UpdateProductServlet updateProductServlet =
-                (UpdateProductServlet) context.getBean("updateProductServlet");
+        AddProductServlet addProductServlet = context.getBean(AddProductServlet.class);
+        GetProductServlet getProductServlet = context.getBean(GetProductServlet.class);
+        GetProductsServlet getProductsServlet = context.getBean(GetProductsServlet.class);
+        RemoveProductServlet removeProductServlet = context.getBean(RemoveProductServlet.class);
+        UpdateProductServlet updateProductServlet = context.getBean(UpdateProductServlet.class);
 
         ServletRegistration.Dynamic addProduct =
                 servletContext.addServlet("addProductServlet", addProductServlet);
@@ -67,7 +64,7 @@ public class AnnotationWebApplicationInitializer implements WebApplicationInitia
         updateProduct.addMapping("/api/product/update");
 
         // Receipt
-        GetReceiptServlet getReceiptServlet = (GetReceiptServlet) context.getBean("getReceiptServlet");
+        GetReceiptServlet getReceiptServlet = context.getBean(GetReceiptServlet.class);
 
         ServletRegistration.Dynamic getReceipt =
                 servletContext.addServlet("getReceiptServlet", getReceiptServlet);

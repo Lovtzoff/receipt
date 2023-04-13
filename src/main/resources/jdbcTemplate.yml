@@ -1,0 +1,4 @@
+url: jdbc:postgresql://localhost:5432/receipt_repository
+username: postgres
+password: root
+driver: org.postgresql.Driver

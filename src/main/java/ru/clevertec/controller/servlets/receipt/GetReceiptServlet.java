@@ -3,7 +3,6 @@ package ru.clevertec.controller.servlets.receipt;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Receipt;
