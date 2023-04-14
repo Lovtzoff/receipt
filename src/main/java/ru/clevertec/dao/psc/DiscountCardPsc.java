@@ -11,23 +11,52 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Реализация PreparedStatementCreator для класса DiscountCard.
+ *
+ * @author Ловцов Алексей
+ */
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DiscountCardPsc implements PreparedStatementCreator, SqlProvider {
 
+    /**
+     * The Sql.
+     */
     final String sql;
+    /**
+     * The Discount card.
+     */
     final DiscountCard discountCard;
 
+    /**
+     * Конструктор.
+     *
+     * @param sql          the sql
+     * @param discountCard the discount card
+     */
     public DiscountCardPsc(String sql, DiscountCard discountCard) {
         super();
         this.sql = sql;
         this.discountCard = discountCard;
     }
 
+    /**
+     * Получить sql.
+     *
+     * @return the sql
+     */
     @Override
     public String getSql() {
         return sql;
     }
 
+    /**
+     * Создать PreparedStatement с учетом соединения, предоставляемого классом JdbcTemplate.
+     *
+     * @param connection the connection
+     * @return the prepared statement
+     * @throws SQLException the sql exception
+     */
     @Override
     @NotNull
     public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {

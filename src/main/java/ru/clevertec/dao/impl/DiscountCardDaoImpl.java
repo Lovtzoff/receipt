@@ -16,11 +16,23 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Реализация интерфейса DiscountCardDao: отправка запросов к БД.
+ *
+ * @author Ловцов Алексей
+ * @see DiscountCardDao
+ */
 @Repository
 @RequiredArgsConstructor
 public class DiscountCardDaoImpl implements DiscountCardDao {
 
+    /**
+     * Объект для отправки SQL-запросов к БД.
+     */
     private final JdbcTemplate jdbcTemplate;
+    /**
+     * Объект для преобразования записи из таблицы БД в класс DiscountCard.
+     */
     private final DiscountCardRowMapper discountCardRowMapper;
 
     @Language("SQL")

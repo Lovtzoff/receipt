@@ -16,11 +16,23 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Реализация интерфейса ProductDao: отправка запросов к БД.
+ *
+ * @author Ловцов Алексей
+ * @see ProductDao
+ */
 @Repository
 @RequiredArgsConstructor
 public class ProductDaoImpl implements ProductDao {
 
+    /**
+     * Объект для отправки SQL-запросов к БД.
+     */
     private final JdbcTemplate jdbcTemplate;
+    /**
+     * Объект для преобразования записи из таблицы БД в класс Product.
+     */
     private final ProductRowMapper productRowMapper;
 
     @Language("SQL")

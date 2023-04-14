@@ -83,6 +83,35 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public void printReceipt(Receipt receipt) {
+        String print = generateTable(receipt);
+        System.out.println(print);
+
+        try {
+            Files.createDirectories(Paths.get(PRINT_DIR));
+            Files.write(Paths.get(RECEIPT_FILE), print.getBytes());
+
+            PdfDocument pdfDocument = new PdfDocument(new PdfWriter(RECEIPT_PDF));
+            Document document = new Document(pdfDocument);
+            PdfFont pdfFont = PdfFontFactory.createFont(FONT_COURIER, "Cp1251");
+            Paragraph paragraph = new Paragraph().setFont(pdfFont);
+
+            paragraph.add(print.replace("\u0020", "\u00A0"));
+            document.setTextAlignment(TextAlignment.LEFT);
+            document.setFontSize((float) 7.0);
+            document.add(paragraph);
+            document.close();
+        } catch (IOException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Создать строку таблицы.
+     *
+     * @param receipt the receipt
+     * @return the string
+     */
+    private String generateTable(Receipt receipt) {
         String company = receipt.getHeader().toString();
         List<String> t1Headers = Arrays.asList("Cashier's number", "Date/Time");
         List<List<String>> t1Rows = Arrays.asList(
@@ -146,25 +175,6 @@ public class ReceiptServiceImpl implements ReceiptService {
         ).allowGrid(false).setDataAlign(Block.DATA_MIDDLE_RIGHT);
         summaryBlock.setRightBlock(summaryValBlock);
 
-        String print = board.invalidate().build().getPreview();
-        System.out.println(print);
-
-        try {
-            Files.createDirectories(Paths.get(PRINT_DIR));
-            Files.write(Paths.get(RECEIPT_FILE), print.getBytes());
-
-            PdfDocument pdfDocument = new PdfDocument(new PdfWriter(RECEIPT_PDF));
-            Document document = new Document(pdfDocument);
-            PdfFont pdfFont = PdfFontFactory.createFont(FONT_COURIER, "Cp1251");
-            Paragraph paragraph = new Paragraph().setFont(pdfFont);
-
-            paragraph.add(print.replace("\u0020", "\u00A0"));
-            document.setTextAlignment(TextAlignment.LEFT);
-            document.setFontSize((float) 7.0);
-            document.add(paragraph);
-            document.close();
-        } catch (IOException ex) {
-            System.out.println("Error: " + ex.getMessage());
-        }
+        return board.invalidate().build().getPreview();
     }
 }
