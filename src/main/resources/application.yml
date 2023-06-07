@@ -1,0 +1,10 @@
+datasource:
+  url: jdbc:postgresql://localhost:5432/receipt_repository
+  username: postgres
+  password: root
+  driver: org.postgresql.Driver
+
+hibernate:
+  show: true
+  format: true
+  dialect: org.hibernate.dialect.PostgreSQL10Dialect

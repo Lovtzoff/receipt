@@ -1,11 +1,11 @@
-package ru.clevertec.util;
+package ru.clevertec.util.yaml;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class YamlProperties {
+public class YamlDatasourceProperties {
 
     private String url;
     private String username;

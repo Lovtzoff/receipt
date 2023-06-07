@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.clevertec.model.DiscountCard;
-import ru.clevertec.util.DiscountCardUtils;
+import ru.clevertec.util.test.TestDataUtils;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -32,7 +32,7 @@ class DiscountCardServiceTest {
      */
     @BeforeAll
     static void generateDiscountCards() {
-        discountCardList = DiscountCardUtils.createDiscountCardList();
+        discountCardList = TestDataUtils.createDiscountCardList();
     }
 
     /**

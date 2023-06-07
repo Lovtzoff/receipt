@@ -1,14 +1,61 @@
-package ru.clevertec.util;
+package ru.clevertec.util.test;
 
-import ru.clevertec.model.Product;
+import ru.clevertec.constants.Constants;
+import ru.clevertec.model.*;
+import ru.clevertec.util.NumberUtils;
+import ru.clevertec.util.RoundingUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
- * Класс, содержащий утилиты для класса Product.
+ * Класс, содержащий методы для получения тестовых данных.
+ *
+ * @author Lovtsov Aliaksei
  */
-public class ProductUtils {
+public class TestDataUtils {
+
+    /**
+     * Создать список дисконтных карт.
+     *
+     * @return список карт
+     */
+    public static List<DiscountCard> createDiscountCardList() {
+        List<DiscountCard> discountCardList = new ArrayList<>(30);
+        discountCardList.add(new DiscountCard(1, 3));
+        discountCardList.add(new DiscountCard(2, 5));
+        discountCardList.add(new DiscountCard(3, 1));
+        discountCardList.add(new DiscountCard(4, 2));
+        discountCardList.add(new DiscountCard(5, 6));
+        discountCardList.add(new DiscountCard(6, 7));
+        discountCardList.add(new DiscountCard(7, 8));
+        discountCardList.add(new DiscountCard(8, 10));
+        discountCardList.add(new DiscountCard(9, 4));
+        discountCardList.add(new DiscountCard(10, 9));
+        discountCardList.add(new DiscountCard(11, 1));
+        discountCardList.add(new DiscountCard(12, 4));
+        discountCardList.add(new DiscountCard(13, 3));
+        discountCardList.add(new DiscountCard(14, 2));
+        discountCardList.add(new DiscountCard(15, 7));
+        discountCardList.add(new DiscountCard(16, 9));
+        discountCardList.add(new DiscountCard(17, 5));
+        discountCardList.add(new DiscountCard(18, 8));
+        discountCardList.add(new DiscountCard(19, 10));
+        discountCardList.add(new DiscountCard(20, 6));
+        discountCardList.add(new DiscountCard(21, 7));
+        discountCardList.add(new DiscountCard(22, 6));
+        discountCardList.add(new DiscountCard(23, 4));
+        discountCardList.add(new DiscountCard(24, 8));
+        discountCardList.add(new DiscountCard(25, 10));
+        discountCardList.add(new DiscountCard(26, 1));
+        discountCardList.add(new DiscountCard(27, 2));
+        discountCardList.add(new DiscountCard(28, 5));
+        discountCardList.add(new DiscountCard(29, 9));
+        discountCardList.add(new DiscountCard(30, 3));
+        return discountCardList;
+    }
 
     /**
      * Создать список продуктов.
@@ -103,5 +150,47 @@ public class ProductUtils {
                 )
         );
         return productList;
+    }
+
+    /**
+     * Создать квитанцию.
+     *
+     * @param sourceArray исходный массив
+     * @return квитанция
+     */
+    public static Receipt createReceipt(String[] sourceArray) {
+        List<Products> productsList = new ArrayList<>();
+        DiscountCard discountCard = new DiscountCard();
+        for (String arg : sourceArray) {
+            String[] array = arg.split(Constants.ARG_SEPARATOR);
+            if (NumberUtils.isNumeric(array[0])) {
+                Product product = createProductList().stream()
+                        .filter(productItem -> productItem.getId().equals(Integer.parseInt(array[0])))
+                        .findFirst()
+                        .get();
+                int count = Integer.parseInt(array[1]);
+                productsList.add(new Products(count, product, count * product.getPrice()));
+            } else if (array[0].equals("card")) {
+                discountCard = createDiscountCardList().stream()
+                        .filter(card -> card.getId().equals(Integer.parseInt(array[1])))
+                        .findFirst()
+                        .get();
+            }
+        }
+
+        double totalNoDiscount = productsList.stream().mapToDouble(Products::getTotalPrice).sum();
+        double discount = (totalNoDiscount * discountCard.getDiscount()) / 100;
+        double totalWithDiscount = (discount != 0) ? (totalNoDiscount - discount) : totalNoDiscount;
+
+        return new Receipt(
+                new Header(),
+                new Cashier(Constants.ID_CASHIER_DEFAULT),
+                new SimpleDateFormat(Constants.DATE_PATTERN).format(new Date()),
+                new SimpleDateFormat(Constants.TIME_PATTERN).format(new Date()),
+                productsList,
+                RoundingUtils.round(totalNoDiscount),
+                RoundingUtils.round(discount),
+                RoundingUtils.round(totalWithDiscount)
+        );
     }
 }

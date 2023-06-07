@@ -14,10 +14,10 @@ public class JdbcTemplateConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(PropertiesUtils.getYamlProperties().getDriver());
-        dataSource.setUrl(PropertiesUtils.getYamlProperties().getUrl());
-        dataSource.setUsername(PropertiesUtils.getYamlProperties().getUsername());
-        dataSource.setPassword(PropertiesUtils.getYamlProperties().getPassword());
+        dataSource.setDriverClassName(PropertiesUtils.getYamlProperties().getDatasource().getDriver());
+        dataSource.setUrl(PropertiesUtils.getYamlProperties().getDatasource().getUrl());
+        dataSource.setUsername(PropertiesUtils.getYamlProperties().getDatasource().getUsername());
+        dataSource.setPassword(PropertiesUtils.getYamlProperties().getDatasource().getPassword());
         return dataSource;
     }
 

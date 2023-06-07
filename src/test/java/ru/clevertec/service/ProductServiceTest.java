@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.Product;
-import ru.clevertec.util.ProductUtils;
+import ru.clevertec.util.test.TestDataUtils;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -31,7 +31,7 @@ public class ProductServiceTest {
      */
     @BeforeAll
     static void generateProducts() {
-        productList = ProductUtils.createProductList();
+        productList = TestDataUtils.createProductList();
     }
 
     /**

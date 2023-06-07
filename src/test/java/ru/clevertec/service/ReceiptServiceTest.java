@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.clevertec.model.Receipt;
-import ru.clevertec.util.ReceiptUtils;
+import ru.clevertec.util.test.TestDataUtils;
 
 import java.util.stream.Stream;
 
@@ -40,7 +40,7 @@ class ReceiptServiceTest {
      */
     @BeforeAll
     static void generateTestReceipt() {
-        receipt = ReceiptUtils.createReceipt(sourceArray);
+        receipt = TestDataUtils.createReceipt(sourceArray);
     }
 
     /**
@@ -81,7 +81,7 @@ class ReceiptServiceTest {
     @MethodSource("generateInputStrings")
     void generateReceiptParameterizedTest(String inputStrings) {
         Assertions.assertEquals(
-                ReceiptUtils.createReceipt(inputStrings.split(STRING_SEPARATOR)),
+                TestDataUtils.createReceipt(inputStrings.split(STRING_SEPARATOR)),
                 receiptService.generateReceipt(inputStrings.split(STRING_SEPARATOR))
         );
     }
