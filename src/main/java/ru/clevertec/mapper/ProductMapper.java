@@ -1,5 +1,6 @@
 package ru.clevertec.mapper;
 
+import org.springframework.stereotype.Component;
 import ru.clevertec.dto.ProductDto;
 import ru.clevertec.model.Product;
 
@@ -9,6 +10,7 @@ import ru.clevertec.model.Product;
  * @author Lovtsov Aliaksei
  * @see Mapper
  */
+@Component
 public class ProductMapper implements Mapper<ProductDto, Product> {
 
     @Override

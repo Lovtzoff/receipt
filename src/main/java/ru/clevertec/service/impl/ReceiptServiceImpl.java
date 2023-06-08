@@ -12,9 +12,10 @@ import com.wagu.Board;
 import com.wagu.Table;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.clevertec.dao.DiscountCardDao;
+import ru.clevertec.dao.ProductDao;
+import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.*;
-import ru.clevertec.service.DiscountCardService;
-import ru.clevertec.service.ProductService;
 import ru.clevertec.service.ReceiptService;
 import ru.clevertec.util.NumberUtils;
 import ru.clevertec.util.RoundingUtils;
@@ -40,8 +41,8 @@ import static ru.clevertec.constants.Constants.*;
 @RequiredArgsConstructor
 public class ReceiptServiceImpl implements ReceiptService {
 
-    private final ProductService productService;
-    private final DiscountCardService discountCardService;
+    private final ProductDao productDao;
+    private final DiscountCardDao discountCardDao;
 
     @Override
     public Receipt generateReceipt(String[] args) {
@@ -50,7 +51,8 @@ public class ReceiptServiceImpl implements ReceiptService {
         for (String arg : args) {
             String[] array = arg.split(ARG_SEPARATOR);
             if (NumberUtils.isNumeric(array[0])) {
-                Product product = productService.findOneById(Integer.parseInt(array[0]));
+                Product product = productDao.findById(Integer.parseInt(array[0]))
+                        .orElseThrow(() -> new ParameterNotFoundException("Товар отсутствует."));
                 int count = (NumberUtils.isNumeric(array[1]) && Integer.parseInt(array[1]) != 0) ?
                         Integer.parseInt(array[1]) : COUNT_DEFAULT;
                 productsList.add(
@@ -62,7 +64,7 @@ public class ReceiptServiceImpl implements ReceiptService {
                 );
             } else if (array[0].equals("card")) {
                 int cardId = NumberUtils.isNumeric(array[1]) ? Integer.parseInt(array[1]) : 0;
-                discountCard = discountCardService.findOneById(cardId);
+                discountCard = discountCardDao.findById(cardId).orElse(new DiscountCard());
             }
         }
         double totalNoDiscount = productsList.stream().mapToDouble(Products::getTotalPrice).sum();

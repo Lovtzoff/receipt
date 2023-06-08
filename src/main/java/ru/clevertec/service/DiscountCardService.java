@@ -1,5 +1,6 @@
 package ru.clevertec.service;
 
+import ru.clevertec.dto.DiscountCardDto;
 import ru.clevertec.model.DiscountCard;
 
 import java.util.List;
@@ -15,9 +16,9 @@ public interface DiscountCardService {
      * Найти дисконтную карту по идентификатору.
      *
      * @param id идентификатор
-     * @return дисконтная карта
+     * @return дисконтная карта dto
      */
-    DiscountCard findOneById(Integer id);
+    DiscountCardDto findOneById(Integer id);
 
     /**
      * Найти список всех дисконтных карт.
@@ -26,24 +27,24 @@ public interface DiscountCardService {
      * @param page the page
      * @return список карт
      */
-    List<DiscountCard> findAll(String size, String page);
+    List<DiscountCardDto> findAll(String size, String page);
 
     /**
      * Сохранить карту.
      *
-     * @param discountCard the discount card
-     * @return the discount card
+     * @param discountCardDto the discount card dto
+     * @return the discount card dto
      */
-    DiscountCard save(DiscountCard discountCard);
+    DiscountCardDto save(DiscountCardDto discountCardDto);
 
     /**
      * Обновить карту.
      *
-     * @param discountCard the discount card
+     * @param discountCardDto the discount card dto
      * @param id           the id
-     * @return the discount card
+     * @return the discount card dto
      */
-    DiscountCard update(DiscountCard discountCard, Integer id);
+    DiscountCardDto update(DiscountCardDto discountCardDto, Integer id);
 
     /**
      * Удалить карту.

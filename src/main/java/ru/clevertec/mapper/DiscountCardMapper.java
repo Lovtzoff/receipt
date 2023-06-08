@@ -1,5 +1,6 @@
 package ru.clevertec.mapper;
 
+import org.springframework.stereotype.Component;
 import ru.clevertec.dto.DiscountCardDto;
 import ru.clevertec.model.DiscountCard;
 
@@ -9,6 +10,7 @@ import ru.clevertec.model.DiscountCard;
  * @author Lovtsov Aliaksei
  * @see Mapper
  */
+@Component
 public class DiscountCardMapper implements Mapper<DiscountCardDto, DiscountCard> {
 
     @Override

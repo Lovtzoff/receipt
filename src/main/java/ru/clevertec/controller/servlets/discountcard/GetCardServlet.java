@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
-import ru.clevertec.model.DiscountCard;
+import ru.clevertec.dto.DiscountCardDto;
 import ru.clevertec.service.DiscountCardService;
 
 import javax.servlet.http.HttpServlet;
@@ -22,8 +22,8 @@ public class GetCardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         Integer id = Integer.valueOf(req.getParameter("id"));
-        DiscountCard discountCard = discountCardService.findOneById(id);
-        String json = new Gson().toJson(discountCard);
+        DiscountCardDto discountCardDto = discountCardService.findOneById(id);
+        String json = new Gson().toJson(discountCardDto);
         try (PrintWriter writer = resp.getWriter()) {
             writer.write(json);
             resp.setStatus(200);

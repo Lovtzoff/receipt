@@ -1,14 +1,19 @@
 package ru.clevertec.service;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.clevertec.model.DiscountCard;
+import ru.clevertec.dto.DiscountCardDto;
+import ru.clevertec.mapper.DiscountCardMapper;
 import ru.clevertec.util.test.TestDataUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -25,14 +30,17 @@ class DiscountCardServiceTest {
     /**
      * Тестовый список дисконтных карт.
      */
-    static List<DiscountCard> discountCardList;
+    static List<DiscountCardDto> discountCardList;
 
     /**
      * Сгенерировать список карт.
      */
     @BeforeAll
     static void generateDiscountCards() {
-        discountCardList = TestDataUtils.createDiscountCardList();
+        DiscountCardMapper cardMapper = new DiscountCardMapper();
+        discountCardList = TestDataUtils.createDiscountCardList().stream()
+                .map(cardMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -48,7 +56,7 @@ class DiscountCardServiceTest {
      */
     @Test
     void findOneByIdTest() {
-        DiscountCard discountCard = new DiscountCard(17, 5);
+        DiscountCardDto discountCard = new DiscountCardDto(17, 5);
         Assertions.assertEquals(discountCard, discountCardService.findOneById(17));
     }
 
@@ -57,8 +65,8 @@ class DiscountCardServiceTest {
      */
     @Test
     void findOneByIdTestForNull() {
-        Assertions.assertEquals(0, discountCardService.findOneById(1136).getId());
-        Assertions.assertEquals(0, discountCardService.findOneById(1136).getDiscount());
+        Assertions.assertNull(discountCardService.findOneById(1136).getId());
+        Assertions.assertNull(discountCardService.findOneById(1136).getDiscount());
     }
 
     /**
@@ -67,7 +75,7 @@ class DiscountCardServiceTest {
      * @return the int stream
      */
     static IntStream generateMissingIds() {
-        return IntStream.range(100, 110);
+        return IntStream.range(1100, 1110);
     }
 
     /**
@@ -78,8 +86,8 @@ class DiscountCardServiceTest {
     @ParameterizedTest
     @MethodSource("generateMissingIds")
     void findOneByIdTestForNull1(Integer missingId) {
-        Assertions.assertEquals(0, discountCardService.findOneById(missingId).getId());
-        Assertions.assertEquals(0, discountCardService.findOneById(missingId).getDiscount());
+        Assertions.assertNull(discountCardService.findOneById(missingId).getId());
+        Assertions.assertNull(discountCardService.findOneById(missingId).getDiscount());
     }
 
     /**
@@ -88,7 +96,7 @@ class DiscountCardServiceTest {
     @Test
     void findAllTest() {
         String pageSize = "30";
-        List<DiscountCard> cards = discountCardService.findAll(pageSize, null);
+        List<DiscountCardDto> cards = discountCardService.findAll(pageSize, null);
         Assertions.assertEquals(discountCardList.size(), cards.size());
         IntStream.range(0, Integer.parseInt(pageSize))
                 .forEach(i -> Assertions.assertEquals(discountCardList.get(i), cards.get(i)));
@@ -100,20 +108,20 @@ class DiscountCardServiceTest {
     @Test
     void testSaveUpdateRemoveMethods() {
         // save method test
-        DiscountCard discountCard = new DiscountCard();
-        discountCard.setDiscount(15);
-        discountCardService.save(discountCard);
-        int cardId = discountCard.getId();
-        Assertions.assertEquals(discountCard, discountCardService.findOneById(cardId));
+        DiscountCardDto discountCardDto = new DiscountCardDto();
+        discountCardDto.setDiscount(15);
+        discountCardDto = discountCardService.save(discountCardDto);
+        int cardId = discountCardDto.getId();
+        Assertions.assertEquals(discountCardDto, discountCardService.findOneById(cardId));
 
         // update method test
-        discountCard.setDiscount(20);
-        discountCardService.update(discountCard, cardId);
-        Assertions.assertEquals(discountCard, discountCardService.findOneById(cardId));
+        discountCardDto.setDiscount(20);
+        discountCardDto = discountCardService.update(discountCardDto, cardId);
+        Assertions.assertEquals(discountCardDto, discountCardService.findOneById(cardId));
 
         // remove method test
         discountCardService.remove(cardId);
-        Assertions.assertEquals(0, discountCardService.findOneById(cardId).getId());
-        Assertions.assertEquals(0, discountCardService.findOneById(cardId).getDiscount());
+        Assertions.assertNull(discountCardService.findOneById(cardId).getId());
+        Assertions.assertNull(discountCardService.findOneById(cardId).getDiscount());
     }
 }
