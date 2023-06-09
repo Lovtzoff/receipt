@@ -10,7 +10,6 @@ import ru.clevertec.model.DiscountCard;
 import ru.clevertec.service.DiscountCardService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
@@ -65,22 +64,14 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public DiscountCardDto update(DiscountCardDto discountCardDto, Integer id) {
-        Optional<DiscountCard> optionalCard = discountCardDao.findById(id);
-        if (optionalCard.isPresent()) {
-            DiscountCard discountCard = cardMapper.toEntity(discountCardDto);
-            return cardMapper.toDto(discountCardDao.update(discountCard, id).get());
-        } else {
-            throw new ParameterNotFoundException("Карта отсутствует в базе!");
-        }
+        findOneById(id);
+        DiscountCard discountCard = cardMapper.toEntity(discountCardDto);
+        return cardMapper.toDto(discountCardDao.update(discountCard, id).get());
     }
 
     @Override
     public void remove(Integer id) {
-        Optional<DiscountCard> optionalCard = discountCardDao.findById(id);
-        if (optionalCard.isPresent()) {
-            discountCardDao.delete(id);
-        } else {
-            throw new ParameterNotFoundException("Карта отсутствует в базе!");
-        }
+        findOneById(id);
+        discountCardDao.delete(id);
     }
 }

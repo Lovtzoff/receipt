@@ -31,20 +31,19 @@ public class GetReceiptServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         String source = req.getParameter("source");
         String[] parameters = source.split(STRING_SEPARATOR);
-
         try {
             ParameterValidator.isValid(parameters);
             Receipt receipt = receiptService.generateReceipt(parameters);
             receiptService.printReceipt(receipt);
-
             try (OutputStream writer2 = resp.getOutputStream()) {
                 writer2.write(Files.readAllBytes(Paths.get(RECEIPT_PDF).toAbsolutePath()));
             }
         } catch (ParameterNotFoundException ex) {
+            resp.setContentType("application/json");
             String json = new Gson().toJson("Message: " + ex.getMessage());
-
             try (PrintWriter writer = resp.getWriter()) {
                 writer.write(json);
+                resp.setStatus(404);
             }
         }
 

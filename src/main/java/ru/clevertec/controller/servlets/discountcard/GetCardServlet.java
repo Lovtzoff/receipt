@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import ru.clevertec.dto.DiscountCardDto;
+import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.service.DiscountCardService;
 
 import javax.servlet.http.HttpServlet;
@@ -22,11 +23,19 @@ public class GetCardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         Integer id = Integer.valueOf(req.getParameter("id"));
-        DiscountCardDto discountCardDto = discountCardService.findOneById(id);
-        String json = new Gson().toJson(discountCardDto);
-        try (PrintWriter writer = resp.getWriter()) {
-            writer.write(json);
-            resp.setStatus(200);
+        try {
+            DiscountCardDto discountCardDto = discountCardService.findOneById(id);
+            String json = new Gson().toJson(discountCardDto);
+            try (PrintWriter writer = resp.getWriter()) {
+                writer.write(json);
+                resp.setStatus(200);
+            }
+        } catch (ParameterNotFoundException ex) {
+            String json = new Gson().toJson("Message: " + ex.getMessage());
+            try (PrintWriter writer = resp.getWriter()) {
+                writer.write(json);
+                resp.setStatus(404);
+            }
         }
     }
 }

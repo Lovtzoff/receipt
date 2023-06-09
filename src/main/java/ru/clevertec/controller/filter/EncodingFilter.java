@@ -26,6 +26,8 @@ public class EncodingFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             // Пропустить фильтрацию для "/api/getReceipt"
+            request.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
             chain.doFilter(request, response);
         }
     }

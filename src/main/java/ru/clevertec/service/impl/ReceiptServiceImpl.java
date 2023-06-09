@@ -52,7 +52,7 @@ public class ReceiptServiceImpl implements ReceiptService {
             String[] array = arg.split(ARG_SEPARATOR);
             if (NumberUtils.isNumeric(array[0])) {
                 Product product = productDao.findById(Integer.parseInt(array[0]))
-                        .orElseThrow(() -> new ParameterNotFoundException("Товар отсутствует."));
+                        .orElseThrow(() -> new ParameterNotFoundException("Один из товаров отсутствует в базе!"));
                 int count = (NumberUtils.isNumeric(array[1]) && Integer.parseInt(array[1]) != 0) ?
                         Integer.parseInt(array[1]) : COUNT_DEFAULT;
                 productsList.add(

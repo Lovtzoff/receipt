@@ -10,7 +10,6 @@ import ru.clevertec.model.Product;
 import ru.clevertec.service.ProductService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
@@ -65,22 +64,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto update(ProductDto productDto, Integer id) {
-        Optional<Product> optionalProduct = productDao.findById(id);
-        if (optionalProduct.isPresent()) {
-            Product product = productMapper.toEntity(productDto);
-            return productMapper.toDto(productDao.update(product, id).get());
-        } else {
-            throw new ParameterNotFoundException("Товар отсутствует в базе!");
-        }
+        findOneById(id);
+        Product product = productMapper.toEntity(productDto);
+        return productMapper.toDto(productDao.update(product, id).get());
     }
 
     @Override
     public void remove(Integer id) {
-        Optional<Product> optionalProduct = productDao.findById(id);
-        if (optionalProduct.isPresent()) {
-            productDao.delete(id);
-        } else {
-            throw new ParameterNotFoundException("Товар отсутствует в базе!");
-        }
+        findOneById(id);
+        productDao.delete(id);
     }
 }

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import ru.clevertec.dto.ProductDto;
+import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.service.ProductService;
 
 import javax.servlet.http.HttpServlet;
@@ -28,11 +29,19 @@ public class UpdateProductServlet extends HttpServlet {
                 .name(name)
                 .price(price)
                 .build();
-        productDto = productService.update(productDto, id);
-        String json = new Gson().toJson(productDto);
-        try (PrintWriter writer = resp.getWriter()) {
-            writer.write(json);
-            resp.setStatus(201);
+        try {
+            productDto = productService.update(productDto, id);
+            String json = new Gson().toJson(productDto);
+            try (PrintWriter writer = resp.getWriter()) {
+                writer.write(json);
+                resp.setStatus(201);
+            }
+        } catch (ParameterNotFoundException ex) {
+            String json = new Gson().toJson("Message: " + ex.getMessage());
+            try (PrintWriter writer = resp.getWriter()) {
+                writer.write(json);
+                resp.setStatus(404);
+            }
         }
     }
 }
