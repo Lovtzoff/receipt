@@ -23,8 +23,9 @@ public class UpdateCardServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) {
         Integer id = Integer.valueOf(req.getParameter("id"));
         Integer discount = Integer.valueOf(req.getParameter("discount"));
-        DiscountCardDto discountCardDto = new DiscountCardDto();
-        discountCardDto.setDiscount(discount);
+        DiscountCardDto discountCardDto = DiscountCardDto.builder()
+                .discount(discount)
+                .build();
         discountCardDto = discountCardService.update(discountCardDto, id);
         String json = new Gson().toJson(discountCardDto);
         try (PrintWriter writer = resp.getWriter()) {

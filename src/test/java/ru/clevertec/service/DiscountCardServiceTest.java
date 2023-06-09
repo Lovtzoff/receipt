@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.clevertec.dto.DiscountCardDto;
+import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.mapper.DiscountCardMapper;
 import ru.clevertec.util.test.TestDataUtils;
 
@@ -37,9 +38,8 @@ class DiscountCardServiceTest {
      */
     @BeforeAll
     static void generateDiscountCards() {
-        DiscountCardMapper cardMapper = new DiscountCardMapper();
         discountCardList = TestDataUtils.createDiscountCardList().stream()
-                .map(cardMapper::toDto)
+                .map(new DiscountCardMapper()::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -56,17 +56,19 @@ class DiscountCardServiceTest {
      */
     @Test
     void findOneByIdTest() {
-        DiscountCardDto discountCard = new DiscountCardDto(17, 5);
+        DiscountCardDto discountCard = DiscountCardDto.builder()
+                .id(17)
+                .discount(5)
+                .build();
         Assertions.assertEquals(discountCard, discountCardService.findOneById(17));
     }
 
     /**
-     * Тест на ноль для поиска карты по id.
+     * Тест поиска карты по id с ошибкой.
      */
     @Test
-    void findOneByIdTestForNull() {
-        Assertions.assertNull(discountCardService.findOneById(1136).getId());
-        Assertions.assertNull(discountCardService.findOneById(1136).getDiscount());
+    void findOneByIdFailedTest() {
+        Assertions.assertThrows(ParameterNotFoundException.class, () -> discountCardService.findOneById(1136));
     }
 
     /**
@@ -79,15 +81,14 @@ class DiscountCardServiceTest {
     }
 
     /**
-     * Параметризованный тест на ноль для поиска карты по id.
+     * Параметризованный тест поиска карты по id с ошибкой.
      *
      * @param missingId the missing id
      */
     @ParameterizedTest
     @MethodSource("generateMissingIds")
-    void findOneByIdTestForNull1(Integer missingId) {
-        Assertions.assertNull(discountCardService.findOneById(missingId).getId());
-        Assertions.assertNull(discountCardService.findOneById(missingId).getDiscount());
+    void findOneByIdFailedTest1(Integer missingId) {
+        Assertions.assertThrows(ParameterNotFoundException.class, () -> discountCardService.findOneById(missingId));
     }
 
     /**
@@ -108,8 +109,9 @@ class DiscountCardServiceTest {
     @Test
     void testSaveUpdateRemoveMethods() {
         // save method test
-        DiscountCardDto discountCardDto = new DiscountCardDto();
-        discountCardDto.setDiscount(15);
+        DiscountCardDto discountCardDto = DiscountCardDto.builder()
+                .discount(15)
+                .build();
         discountCardDto = discountCardService.save(discountCardDto);
         int cardId = discountCardDto.getId();
         Assertions.assertEquals(discountCardDto, discountCardService.findOneById(cardId));
@@ -121,7 +123,6 @@ class DiscountCardServiceTest {
 
         // remove method test
         discountCardService.remove(cardId);
-        Assertions.assertNull(discountCardService.findOneById(cardId).getId());
-        Assertions.assertNull(discountCardService.findOneById(cardId).getDiscount());
+        Assertions.assertThrows(ParameterNotFoundException.class, () -> discountCardService.findOneById(cardId));
     }
 }

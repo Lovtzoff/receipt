@@ -1,13 +1,18 @@
 package ru.clevertec.service;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.clevertec.dto.ProductDto;
 import ru.clevertec.exception.ParameterNotFoundException;
-import ru.clevertec.model.Product;
+import ru.clevertec.mapper.ProductMapper;
 import ru.clevertec.util.test.TestDataUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -24,14 +29,16 @@ public class ProductServiceTest {
     /**
      * Тестовый список продуктов.
      */
-    static List<Product> productList;
+    static List<ProductDto> productList;
 
     /**
      * Сгенерировать список продуктов.
      */
     @BeforeAll
     static void generateProducts() {
-        productList = TestDataUtils.createProductList();
+        productList = TestDataUtils.createProductList().stream()
+                .map(new ProductMapper()::toDto)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -47,8 +54,12 @@ public class ProductServiceTest {
      */
     @Test
     void findOneByIdTest() {
-        Product product = new Product(15, "Миксер(Мешалка) для смешивания смесей 100*500", 84.0);
-        Assertions.assertEquals(product, productService.findOneById(15));
+        ProductDto productDto = ProductDto.builder()
+                .id(15)
+                .name("Миксер(Мешалка) для смешивания смесей 100*500")
+                .price(84.0)
+                .build();
+        Assertions.assertEquals(productDto, productService.findOneById(15));
     }
 
     /**
@@ -56,7 +67,7 @@ public class ProductServiceTest {
      */
     @Test
     void findOneByIdFailedTest() {
-        Assertions.assertThrows(ParameterNotFoundException.class, () -> productService.findOneById(200));
+        Assertions.assertThrows(ParameterNotFoundException.class, () -> productService.findOneById(1200));
     }
 
     /**
@@ -65,7 +76,7 @@ public class ProductServiceTest {
     @Test
     void findAllTest() {
         String pageSize = "30";
-        List<Product> products = productService.findAll(pageSize, null);
+        List<ProductDto> products = productService.findAll(pageSize, null);
         Assertions.assertEquals(productList.size(), products.size());
         IntStream.range(0, Integer.parseInt(pageSize))
                 .forEach(i -> Assertions.assertEquals(productList.get(i), products.get(i)));
@@ -77,18 +88,19 @@ public class ProductServiceTest {
     @Test
     void testSaveUpdateRemoveMethods() {
         // save method test
-        Product product = new Product();
-        product.setName("Вагонка СЛ (Осина) СОРТ \"АВ\" 16х94(85)х2000мм (8шт.)");
-        product.setPrice(26.84);
-        productService.save(product);
-        int productId = product.getId();
-        Assertions.assertEquals(product, productService.findOneById(productId));
+        ProductDto productDto = ProductDto.builder()
+                .name("Вагонка СЛ (Осина) СОРТ \"АВ\" 16х94(85)х2000мм (8шт.)")
+                .price(26.84)
+                .build();
+        productDto = productService.save(productDto);
+        int productId = productDto.getId();
+        Assertions.assertEquals(productDto, productService.findOneById(productId));
 
         // update method test
-        product.setName("Брусок профилированный обрезной сухой береза 15х40х2000 мм");
-        product.setPrice(1.94);
-        productService.update(product, productId);
-        Assertions.assertEquals(product, productService.findOneById(productId));
+        productDto.setName("Брусок профилированный обрезной сухой береза 15х40х2000 мм");
+        productDto.setPrice(1.94);
+        productDto = productService.update(productDto, productId);
+        Assertions.assertEquals(productDto, productService.findOneById(productId));
 
         // remove method test
         productService.remove(productId);

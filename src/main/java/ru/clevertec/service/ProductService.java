@@ -1,6 +1,6 @@
 package ru.clevertec.service;
 
-import ru.clevertec.model.Product;
+import ru.clevertec.dto.ProductDto;
 
 import java.util.List;
 
@@ -15,35 +15,35 @@ public interface ProductService {
      * Найти товар по идентификатору.
      *
      * @param id идентификатор
-     * @return товар product
+     * @return товар product dto
      */
-    Product findOneById(Integer id);
+    ProductDto findOneById(Integer id);
 
     /**
      * Найти список всех товаров.
      *
      * @param size the size
      * @param page the page
-     * @return список товаров
+     * @return список товаров dto
      */
-    List<Product> findAll(String size, String page);
+    List<ProductDto> findAll(String size, String page);
 
     /**
      * Сохранить товар.
      *
-     * @param product the product
-     * @return the product
+     * @param productDto the product dto
+     * @return the product dto
      */
-    Product save(Product product);
+    ProductDto save(ProductDto productDto);
 
     /**
      * Обновить товар.
      *
-     * @param product the product
-     * @param id      the id
-     * @return the product
+     * @param productDto the product dto
+     * @param id         the id
+     * @return the product dto
      */
-    Product update(Product product, Integer id);
+    ProductDto update(ProductDto productDto, Integer id);
 
     /**
      * Удалить товар.

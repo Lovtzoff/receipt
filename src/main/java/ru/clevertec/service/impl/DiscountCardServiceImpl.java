@@ -39,7 +39,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     public DiscountCardDto findOneById(Integer id) {
         return discountCardDao.findById(id)
                 .map(cardMapper::toDto)
-                .orElse(new DiscountCardDto());
+                .orElseThrow(() -> new ParameterNotFoundException("Карта отсутствует в базе!"));
     }
 
     @Override
@@ -52,8 +52,9 @@ public class DiscountCardServiceImpl implements DiscountCardService {
                 .collect(Collectors.toList());
         if (!discountCards.isEmpty()) {
             return discountCards;
+        } else {
+            throw new ParameterNotFoundException("Ошибка чтения списка скидочных карт! База карт пуста!");
         }
-        throw new ParameterNotFoundException("Ошибка чтения списка скидочных карт! База карт пуста!");
     }
 
     @Override
@@ -64,8 +65,8 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public DiscountCardDto update(DiscountCardDto discountCardDto, Integer id) {
-        Optional<DiscountCard> optionalProduct = discountCardDao.findById(id);
-        if (optionalProduct.isPresent()) {
+        Optional<DiscountCard> optionalCard = discountCardDao.findById(id);
+        if (optionalCard.isPresent()) {
             DiscountCard discountCard = cardMapper.toEntity(discountCardDto);
             return cardMapper.toDto(discountCardDao.update(discountCard, id).get());
         } else {
@@ -75,8 +76,8 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public void remove(Integer id) {
-        Optional<DiscountCard> optionalProduct = discountCardDao.findById(id);
-        if (optionalProduct.isPresent()) {
+        Optional<DiscountCard> optionalCard = discountCardDao.findById(id);
+        if (optionalCard.isPresent()) {
             discountCardDao.delete(id);
         } else {
             throw new ParameterNotFoundException("Карта отсутствует в базе!");

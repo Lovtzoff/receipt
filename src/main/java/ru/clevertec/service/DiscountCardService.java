@@ -1,7 +1,6 @@
 package ru.clevertec.service;
 
 import ru.clevertec.dto.DiscountCardDto;
-import ru.clevertec.model.DiscountCard;
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ public interface DiscountCardService {
      * Обновить карту.
      *
      * @param discountCardDto the discount card dto
-     * @param id           the id
+     * @param id              the id
      * @return the discount card dto
      */
     DiscountCardDto update(DiscountCardDto discountCardDto, Integer id);

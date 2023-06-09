@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
-import ru.clevertec.model.Product;
+import ru.clevertec.dto.ProductDto;
 import ru.clevertec.service.ProductService;
 
 import javax.servlet.http.HttpServlet;
@@ -24,9 +24,12 @@ public class UpdateProductServlet extends HttpServlet {
         Integer id = Integer.valueOf(req.getParameter("id"));
         String name = req.getParameter("name");
         Double price = Double.valueOf(req.getParameter("price"));
-        Product product = new Product(name, price);
-        productService.update(product, id);
-        String json = new Gson().toJson(product);
+        ProductDto productDto = ProductDto.builder()
+                .name(name)
+                .price(price)
+                .build();
+        productDto = productService.update(productDto, id);
+        String json = new Gson().toJson(productDto);
         try (PrintWriter writer = resp.getWriter()) {
             writer.write(json);
             resp.setStatus(201);

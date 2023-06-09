@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import ru.clevertec.dto.DiscountCardDto;
-import ru.clevertec.model.DiscountCard;
 import ru.clevertec.service.DiscountCardService;
 
 import javax.servlet.http.HttpServlet;
@@ -23,8 +22,9 @@ public class AddCardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         Integer discount = Integer.valueOf(req.getParameter("discount"));
-        DiscountCardDto discountCardDto = new DiscountCardDto();
-        discountCardDto.setDiscount(discount);
+        DiscountCardDto discountCardDto = DiscountCardDto.builder()
+                .discount(discount)
+                .build();
         discountCardDto = discountCardService.save(discountCardDto);
         String json = new Gson().toJson(discountCardDto);
         try (PrintWriter writer = resp.getWriter()) {

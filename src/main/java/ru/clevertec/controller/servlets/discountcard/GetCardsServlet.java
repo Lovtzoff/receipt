@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 import ru.clevertec.dto.DiscountCardDto;
-import ru.clevertec.model.DiscountCard;
 import ru.clevertec.service.DiscountCardService;
 
 import javax.servlet.http.HttpServlet;

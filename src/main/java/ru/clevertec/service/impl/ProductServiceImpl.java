@@ -3,12 +3,15 @@ package ru.clevertec.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.clevertec.dao.ProductDao;
+import ru.clevertec.dto.ProductDto;
 import ru.clevertec.exception.ParameterNotFoundException;
+import ru.clevertec.mapper.ProductMapper;
 import ru.clevertec.model.Product;
 import ru.clevertec.service.ProductService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static ru.clevertec.constants.Constants.DEFAULT_PAGE;
 import static ru.clevertec.constants.Constants.DEFAULT_SIZE_PAGE;
@@ -27,44 +30,57 @@ public class ProductServiceImpl implements ProductService {
      * Получение данных из базы.
      */
     private final ProductDao productDao;
+    /**
+     * Конвертация сущности в DTO и обратно.
+     */
+    private final ProductMapper productMapper;
 
     @Override
-    public Product findOneById(Integer id) {
-        Optional<Product> optionalProduct = productDao.findById(id);
-        if (optionalProduct.isPresent()) {
-            return optionalProduct.get();
-        }
-        throw new ParameterNotFoundException("Присутствуют товары, отсутствующие в каталоге!");
+    public ProductDto findOneById(Integer id) {
+        return productDao.findById(id)
+                .map(productMapper::toDto)
+                .orElseThrow(() -> new ParameterNotFoundException("Товар отсутствует в базе!"));
     }
 
     @Override
-    public List<Product> findAll(String size, String page) {
+    public List<ProductDto> findAll(String size, String page) {
         int pageSize = (size != null) ? Integer.parseInt(size) : DEFAULT_SIZE_PAGE;
         int pageNumber = (page != null) ? (Integer.parseInt(page) * pageSize) : DEFAULT_PAGE;
 
-        List<Product> products = productDao.findAll(pageSize, pageNumber);
+        List<ProductDto> products = productDao.findAll(pageSize, pageNumber).stream()
+                .map(productMapper::toDto)
+                .collect(Collectors.toList());
         if (!products.isEmpty()) {
             return products;
+        } else {
+            throw new ParameterNotFoundException("Ошибка чтения каталога товаров! База товаров пуста!");
         }
-        throw new ParameterNotFoundException("Ошибка чтения каталога товаров! База товаров пуста!");
     }
 
     @Override
-    public Product save(Product product) {
-        return productDao.add(product);
+    public ProductDto save(ProductDto productDto) {
+        Product product = productMapper.toEntity(productDto);
+        return productMapper.toDto(productDao.add(product));
     }
 
     @Override
-    public Product update(Product product, Integer id) {
+    public ProductDto update(ProductDto productDto, Integer id) {
         Optional<Product> optionalProduct = productDao.findById(id);
         if (optionalProduct.isPresent()) {
-            return productDao.update(product, id).get();
+            Product product = productMapper.toEntity(productDto);
+            return productMapper.toDto(productDao.update(product, id).get());
+        } else {
+            throw new ParameterNotFoundException("Товар отсутствует в базе!");
         }
-        throw new ParameterNotFoundException("Товар отсутствует в базе!");
     }
 
     @Override
     public void remove(Integer id) {
-        productDao.delete(id);
+        Optional<Product> optionalProduct = productDao.findById(id);
+        if (optionalProduct.isPresent()) {
+            productDao.delete(id);
+        } else {
+            throw new ParameterNotFoundException("Товар отсутствует в базе!");
+        }
     }
 }
