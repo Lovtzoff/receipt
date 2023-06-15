@@ -12,10 +12,10 @@ import com.wagu.Board;
 import com.wagu.Table;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.clevertec.dao.DiscountCardDao;
-import ru.clevertec.dao.ProductDao;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.model.*;
+import ru.clevertec.repository.DiscountCardRepository;
+import ru.clevertec.repository.ProductRepository;
 import ru.clevertec.service.ReceiptService;
 import ru.clevertec.util.NumberUtils;
 import ru.clevertec.util.RoundingUtils;
@@ -41,8 +41,8 @@ import static ru.clevertec.constants.Constants.*;
 @RequiredArgsConstructor
 public class ReceiptServiceImpl implements ReceiptService {
 
-    private final ProductDao productDao;
-    private final DiscountCardDao discountCardDao;
+    private final ProductRepository productRepository;
+    private final DiscountCardRepository discountCardRepository;
 
     @Override
     public Receipt generateReceipt(String[] args) {
@@ -51,7 +51,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         for (String arg : args) {
             String[] array = arg.split(ARG_SEPARATOR);
             if (NumberUtils.isNumeric(array[0])) {
-                Product product = productDao.findById(Integer.parseInt(array[0]))
+                Product product = productRepository.findById(Integer.parseInt(array[0]))
                         .orElseThrow(() -> new ParameterNotFoundException("Один из товаров отсутствует в базе!"));
                 int count = (NumberUtils.isNumeric(array[1]) && Integer.parseInt(array[1]) != 0) ?
                         Integer.parseInt(array[1]) : COUNT_DEFAULT;
@@ -64,7 +64,7 @@ public class ReceiptServiceImpl implements ReceiptService {
                 );
             } else if (array[0].equals("card")) {
                 int cardId = NumberUtils.isNumeric(array[1]) ? Integer.parseInt(array[1]) : 0;
-                discountCard = discountCardDao.findById(cardId).orElse(new DiscountCard());
+                discountCard = discountCardRepository.findById(cardId).orElse(new DiscountCard());
             }
         }
         double totalNoDiscount = productsList.stream().mapToDouble(Products::getTotalPrice).sum();
@@ -126,7 +126,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         for (Products products : receipt.getProductsList()) {
             List<String> list = new ArrayList<>(4);
             list.add(String.valueOf(products.getCount()));
-            list.add(products.getProduct().getName());
+            list.add(products.getProduct().getProductName());
             list.add(String.valueOf(products.getProduct().getPrice()));
             list.add(String.valueOf(products.getTotalPrice()));
             t2Rows.add(list);

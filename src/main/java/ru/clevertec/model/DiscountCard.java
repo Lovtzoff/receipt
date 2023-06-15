@@ -4,17 +4,21 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.clevertec.model.parent.BaseModel;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * Класс модели скидочной карты с полем <b>id</b>, унаследованным от абстрактного класса BaseModel,
  * и полем <b>discount</b>.
  *
- * @author Ловцов Алексей
+ * @author Lovtsov Aliaksei
  * @see BaseModel
  */
 @Data
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false)
+@Entity
 public class DiscountCard extends BaseModel {
 
     /**

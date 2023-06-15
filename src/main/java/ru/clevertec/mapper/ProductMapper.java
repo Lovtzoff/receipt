@@ -17,7 +17,7 @@ public class ProductMapper implements Mapper<ProductDto, Product> {
     public ProductDto toDto(Product entity) {
         return ProductDto.builder()
                 .id(entity.getId())
-                .name(entity.getName())
+                .name(entity.getProductName())
                 .price(entity.getPrice())
                 .build();
     }

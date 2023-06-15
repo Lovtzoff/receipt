@@ -4,11 +4,13 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.clevertec.model.parent.BaseModel;
 
+import javax.persistence.Entity;
+
 /**
  * Класс товара с полем <b>id</b>, унаследованным от абстрактного класса BaseModel,
  * и полями <b>name</b>, и <b>price</b>.
  *
- * @author Ловцов Алексей
+ * @author Lovtsov Aliaksei
  * @see BaseModel
  */
 @Data
@@ -16,12 +18,13 @@ import ru.clevertec.model.parent.BaseModel;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false)
+@Entity
 public class Product extends BaseModel {
 
     /**
      * Название.
      */
-    String name;
+    String productName;
     /**
      * Цена за единицу товара.
      */
@@ -38,14 +41,14 @@ public class Product extends BaseModel {
     @Builder
     public Product(Integer id, String name, Double price) {
         super(id);
-        this.name = name;
+        this.productName = name;
         this.price = price;
     }
 
     @Override
     public String toString() {
         return "id = " + super.getId() +
-                ", name = " + name +
+                ", name = " + productName +
                 ", price = $" + price;
     }
 }

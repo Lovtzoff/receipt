@@ -1,12 +1,14 @@
 package ru.clevertec.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.clevertec.dao.DiscountCardDao;
+import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.dto.DiscountCardDto;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.mapper.DiscountCardMapper;
 import ru.clevertec.model.DiscountCard;
+import ru.clevertec.repository.DiscountCardRepository;
 import ru.clevertec.service.DiscountCardService;
 
 import java.util.List;
@@ -23,12 +25,13 @@ import static ru.clevertec.constants.Constants.DEFAULT_SIZE_PAGE;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class DiscountCardServiceImpl implements DiscountCardService {
 
     /**
      * Получение данных из базы.
      */
-    private final DiscountCardDao discountCardDao;
+    private final DiscountCardRepository discountCardRepository;
     /**
      * Конвертация сущности в DTO и обратно.
      */
@@ -36,7 +39,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public DiscountCardDto findOneById(Integer id) {
-        return discountCardDao.findById(id)
+        return discountCardRepository.findById(id)
                 .map(cardMapper::toDto)
                 .orElseThrow(() -> new ParameterNotFoundException("Карта отсутствует в базе!"));
     }
@@ -46,7 +49,8 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         int pageSize = (size != null) ? Integer.parseInt(size) : DEFAULT_SIZE_PAGE;
         int pageNumber = (page != null) ? (Integer.parseInt(page) * pageSize) : DEFAULT_PAGE;
 
-        List<DiscountCardDto> discountCards = discountCardDao.findAll(pageSize, pageNumber).stream()
+        List<DiscountCardDto> discountCards = discountCardRepository.findAll(PageRequest.of(pageNumber, pageSize))
+                .stream()
                 .map(cardMapper::toDto)
                 .collect(Collectors.toList());
         if (!discountCards.isEmpty()) {
@@ -57,21 +61,25 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     }
 
     @Override
+    @Transactional
     public DiscountCardDto save(DiscountCardDto discountCardDto) {
         DiscountCard discountCard = cardMapper.toEntity(discountCardDto);
-        return cardMapper.toDto(discountCardDao.add(discountCard));
+        return cardMapper.toDto(discountCardRepository.save(discountCard));
     }
 
     @Override
+    @Transactional
     public DiscountCardDto update(DiscountCardDto discountCardDto, Integer id) {
         findOneById(id);
         DiscountCard discountCard = cardMapper.toEntity(discountCardDto);
-        return cardMapper.toDto(discountCardDao.update(discountCard, id).get());
+        discountCard.setDiscount(id);
+        return cardMapper.toDto(discountCardRepository.saveAndFlush(discountCard));
     }
 
     @Override
+    @Transactional
     public void remove(Integer id) {
         findOneById(id);
-        discountCardDao.delete(id);
+        discountCardRepository.deleteById(id);
     }
 }

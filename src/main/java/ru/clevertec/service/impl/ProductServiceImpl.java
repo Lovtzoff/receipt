@@ -1,12 +1,14 @@
 package ru.clevertec.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.clevertec.dao.ProductDao;
+import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.dto.ProductDto;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.mapper.ProductMapper;
 import ru.clevertec.model.Product;
+import ru.clevertec.repository.ProductRepository;
 import ru.clevertec.service.ProductService;
 
 import java.util.List;
@@ -23,12 +25,13 @@ import static ru.clevertec.constants.Constants.DEFAULT_SIZE_PAGE;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProductServiceImpl implements ProductService {
 
     /**
      * Получение данных из базы.
      */
-    private final ProductDao productDao;
+    private final ProductRepository productRepository;
     /**
      * Конвертация сущности в DTO и обратно.
      */
@@ -36,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto findOneById(Integer id) {
-        return productDao.findById(id)
+        return productRepository.findById(id)
                 .map(productMapper::toDto)
                 .orElseThrow(() -> new ParameterNotFoundException("Товар отсутствует в базе!"));
     }
@@ -46,7 +49,8 @@ public class ProductServiceImpl implements ProductService {
         int pageSize = (size != null) ? Integer.parseInt(size) : DEFAULT_SIZE_PAGE;
         int pageNumber = (page != null) ? (Integer.parseInt(page) * pageSize) : DEFAULT_PAGE;
 
-        List<ProductDto> products = productDao.findAll(pageSize, pageNumber).stream()
+        List<ProductDto> products = productRepository.findAll(PageRequest.of(pageNumber, pageSize))
+                .stream()
                 .map(productMapper::toDto)
                 .collect(Collectors.toList());
         if (!products.isEmpty()) {
@@ -57,21 +61,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductDto save(ProductDto productDto) {
         Product product = productMapper.toEntity(productDto);
-        return productMapper.toDto(productDao.add(product));
+        return productMapper.toDto(productRepository.save(product));
     }
 
     @Override
+    @Transactional
     public ProductDto update(ProductDto productDto, Integer id) {
         findOneById(id);
         Product product = productMapper.toEntity(productDto);
-        return productMapper.toDto(productDao.update(product, id).get());
+        product.setId(id);
+        return productMapper.toDto(productRepository.saveAndFlush(product));
     }
 
     @Override
+    @Transactional
     public void remove(Integer id) {
         findOneById(id);
-        productDao.delete(id);
+        productRepository.deleteById(id);
     }
 }
