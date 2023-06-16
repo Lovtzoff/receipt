@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> findAll(String size, String page) {
         int pageSize = (size != null) ? Integer.parseInt(size) : DEFAULT_SIZE_PAGE;
-        int pageNumber = (page != null) ? (Integer.parseInt(page) * pageSize) : DEFAULT_PAGE;
+        int pageNumber = (page != null) ? Integer.parseInt(page) : DEFAULT_PAGE;
 
         List<ProductDto> products = productRepository.findAll(PageRequest.of(pageNumber, pageSize))
                 .stream()

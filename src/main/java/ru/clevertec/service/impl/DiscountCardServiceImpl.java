@@ -47,7 +47,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     @Override
     public List<DiscountCardDto> findAll(String size, String page) {
         int pageSize = (size != null) ? Integer.parseInt(size) : DEFAULT_SIZE_PAGE;
-        int pageNumber = (page != null) ? (Integer.parseInt(page) * pageSize) : DEFAULT_PAGE;
+        int pageNumber = (page != null) ? Integer.parseInt(page) : DEFAULT_PAGE;
 
         List<DiscountCardDto> discountCards = discountCardRepository.findAll(PageRequest.of(pageNumber, pageSize))
                 .stream()
@@ -72,7 +72,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     public DiscountCardDto update(DiscountCardDto discountCardDto, Integer id) {
         findOneById(id);
         DiscountCard discountCard = cardMapper.toEntity(discountCardDto);
-        discountCard.setDiscount(id);
+        discountCard.setId(id);
         return cardMapper.toDto(discountCardRepository.saveAndFlush(discountCard));
     }
 
