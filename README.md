@@ -24,40 +24,40 @@
 Web-приложение запускается через сервер TomCat.
 Для работы с приложением реализованы следующие запросы:
 * Получить список продуктов  
-  http://localhost:<port?>/api/products?size=<?>&page=<?>  
+  http://localhost:(port?)/api/products?size=(?)&page=(?) -   
   Где size - размер списка, page - номер страницы.
 * Получить продукт по id  
-  http://localhost:<port?>/api/product?id=<?>  
+  http://localhost:(port?)/api/product?id=(?) - 
   Где id - идентификатор товара.
 * Добавить продукт   
-  http://localhost:<port?>/api/product/add?name=<?>&price=<?>  
+  http://localhost:(port?)/api/product/add?name=(?)&price=(?) -   
   Где name - имя продукта, price - цена за единицу продукта.
 * Обновить продукт  
-  http://localhost:<port?>/api/product/update?id=<?>&name=<?>&price=<?>  
+  http://localhost:(port?)/api/product/update?id=(?)&name=(?)&price=(?) -   
   Где id - идентификатор товара, name - новое имя продукта, price - новая цена за единицу продукта.
 * Удалить продукт  
-  http://localhost:<port?>/api/product/remove?id=<?>  
+  http://localhost:(port?)/api/product/remove?id=(?) -   
   Где id - идентификатор товара.
 * Получить список дисконтных карт  
-  http://localhost:<port?>/api/cards?size=<?>&page=<?>  
+  http://localhost:(port?)/api/cards?size=(?)&page=(?) - 
   Где size - размер списка, page - номер страницы.
 * Получить карту по id  
-  http://localhost:<port?>/api/card?id=<?>  
+  http://localhost:(port?)/api/card?id=(?) - 
   Где id - идентификатор карты.
 * Добавить карту   
-  http://localhost:<port?>/api/card/add?discount=<?>  
+  http://localhost:(port?)/api/card/add?discount=(?)
   Где discount - скидка в %.
 * Обновить карту  
-  http://localhost:<port?>/api/card/update?id=<?>&discount=<?>  
+  http://localhost:(port?)/api/card/update?id=(?)&discount=(?) -   
   Где id - идентификатор карты, discount - новая скидка в %.
 * Удалить карту  
-  http://localhost:<port?>/api/card/remove?id=<?>  
+  http://localhost:(port?)/api/card/remove?id=(?) -
   Где id - идентификатор карты.
 * Получить PDF-чек  
-  http://localhost:<port?>/api/getReceipt?source=<?>  
+  http://localhost:(port?)/api/getReceipt?source=(?) -   
   Где source - строка с входными параметрами для генерации чека (Например: 3-1 2-5 5-1 card-15).
 
-_Примечание: Вместо <port?> надо задать используемый порт, а вместо <?> надо задать исходные параметры._
+_Примечание: Вместо (port?) надо задать используемый порт, а вместо (?) надо задать исходные параметры._
 
 ### Использованные библиотеки ###
 Были использованы следующие библиотеки:
