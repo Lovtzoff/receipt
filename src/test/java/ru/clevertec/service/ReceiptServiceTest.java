@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.clevertec.model.Receipt;
-import ru.clevertec.util.test.TestDataUtils;
+import ru.clevertec.util.TestDataUtils;
 
 import java.util.stream.Stream;
 
@@ -18,7 +18,7 @@ import static ru.clevertec.constants.Constants.STRING_SEPARATOR;
 /**
  * Тесты сервиса для чека.
  */
-@SpringBootTest(classes = ru.clevertec.config.ApplicationConfiguration.class)
+@SpringBootTest
 class ReceiptServiceTest {
 
     /**

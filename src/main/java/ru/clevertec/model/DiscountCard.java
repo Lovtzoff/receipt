@@ -19,6 +19,7 @@ import javax.persistence.Table;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false)
 @Entity
+@Table(name = "discountcard")
 public class DiscountCard extends BaseModel {
 
     /**

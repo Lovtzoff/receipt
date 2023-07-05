@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.clevertec.model.parent.BaseModel;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -24,6 +25,7 @@ public class Product extends BaseModel {
     /**
      * Название.
      */
+    @Column(name = "productname")
     String productName;
     /**
      * Цена за единицу товара.

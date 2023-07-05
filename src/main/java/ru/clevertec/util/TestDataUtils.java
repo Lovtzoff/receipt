@@ -1,4 +1,4 @@
-package ru.clevertec.util.test;
+package ru.clevertec.util;
 
 import ru.clevertec.constants.Constants;
 import ru.clevertec.model.*;

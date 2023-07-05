@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ru.clevertec.dto.ProductDto;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.mapper.ProductMapper;
-import ru.clevertec.util.test.TestDataUtils;
+import ru.clevertec.util.TestDataUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
 /**
  * Тесты сервиса для продуктов.
  */
-@SpringBootTest(classes = ru.clevertec.config.ApplicationConfiguration.class)
+@SpringBootTest
 public class ProductServiceTest {
 
     /**

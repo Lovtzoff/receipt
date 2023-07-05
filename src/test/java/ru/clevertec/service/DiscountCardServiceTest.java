@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ru.clevertec.dto.DiscountCardDto;
 import ru.clevertec.exception.ParameterNotFoundException;
 import ru.clevertec.mapper.DiscountCardMapper;
-import ru.clevertec.util.test.TestDataUtils;
+import ru.clevertec.util.TestDataUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 /**
  * Тесты сервиса для дисконтных карт.
  */
-@SpringBootTest(classes = ru.clevertec.config.ApplicationConfiguration.class)
+@SpringBootTest
 class DiscountCardServiceTest {
 
     /**
